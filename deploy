@@ -1,0 +1,1 @@
+rsync -av ./ jz39y_qenium@jz39y.ftp.infomaniak.com:~/sites/bezo2 --exclude '.vscode' --exclude '.git' --exclude '.env' --exclude 'storage' --exclude 'public/img'

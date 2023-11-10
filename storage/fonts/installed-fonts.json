@@ -1,0 +1,38 @@
+{
+    "dosis": {
+        "normal": "dosis_normal_760ac5f63d0384c81d7776cf4505bb23"
+    },
+    "montserrat": {
+        "normal": "montserrat_normal_503690d8de71ed6d6676fa96fff283cc"
+    },
+    "nunito": {
+        "normal": "nunito_normal_7173294b894229c46ad1835001660d90"
+    },
+    "open sans": {
+        "normal": "open_sans_normal_493b65cf8518098d75868b0522c1c5ac"
+    },
+    "oxygen": {
+        "normal": "oxygen_normal_604142c9f193640c4302ff8a4ce707f1"
+    },
+    "pt sans": {
+        "normal": "pt_sans_normal_778ae6b7c9b126f645e0a0c5d9404cb0"
+    },
+    "poppins": {
+        "normal": "poppins_normal_c885b15ae79e3daeece46b4ffe3f3d1b"
+    },
+    "raleway": {
+        "normal": "raleway_normal_33b999b0bb82efe5dc2cc0253094d78d"
+    },
+    "ubuntu": {
+        "normal": "ubuntu_normal_73b0924b94291ad8979922ce92c32081"
+    },
+    "themify-icons": {
+        "normal": "themify_icons_normal_11b63558c3591a253eac79c0bcb6ee49"
+    },
+    "simple-line-icons": {
+        "normal": "simple_line_icons_normal_0da11b853f7405e2b3bd7925081ebd26"
+    },
+    "fontawesome": {
+        "normal": "fontawesome_normal_6b8fcb303bfef6f4ea9e882534054307"
+    }
+}

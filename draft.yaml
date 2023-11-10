@@ -1,0 +1,241 @@
+models:
+  User:
+    code: string:255 nullable unique
+    rank: string:255 nullable
+    slug: string:255 nullable unique
+    lang: string:255 nullable
+
+    last_name: string:255 nullable
+    first_name: string:255 nullable
+    email: string:255 nullable unique
+    pseudo: string:255 nullable unique
+    phone: string:255 nullable
+    address: string:255 nullable
+    location: json nullable
+    occupation: string:255 nullable
+    sex: enum:Masculin,Féminin nullable
+    birth_at: timestamp nullable
+    birth_place: string:255 nullable
+    bio: longtext nullable
+
+    email_verified_at: timestamp nullable
+    password: string:255 nullable
+    remember_token: remembertoken
+
+    status: boolean nullable
+    country_id: id foreign nullable
+    parent_id: id foreign:users.id nullable onDelete:null onUpdate:cascade
+
+    setting_id: id foreign nullable
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    deleted_at: softDeletes nullable
+    relationships:
+      hasMany: User:childrens, Session, Commande
+
+  Setting:
+    code: string:255 nullable unique
+    rank: string:255 nullable
+    slug: string:255 nullable unique
+
+    title: string:255 nullable
+    subtitle: string:255 nullable
+    icon: string:255 nullable
+    email: string:255 nullable
+    phone: string:255 nullable
+    content: longtext nullable
+    address: string:255 nullable
+    location: json nullable
+    status: boolean nullable
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    deleted_at: softDeletes nullable
+
+  Country:
+    code: string:255 nullable unique
+    rank: string:255 nullable
+    slug: string:255 nullable unique
+
+    alpha_2: string:255 nullable
+    alpha_3: string:255 nullable
+    title: string:255 nullable
+    subtitle: string:255 nullable
+    location: json nullable
+    icon: string:255 nullable
+    content: longtext nullable
+    status: boolean nullable
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    deleted_at: softDeletes nullable
+    relationships:
+      hasMany: Address, User
+
+  TypeParameter:
+    code: string:255 nullable unique
+    rank: string:255 nullable
+    slug: string:255 nullable unique
+
+    title: string:255 nullable
+    subtitle: string:255 nullable
+    icon: string:255 nullable
+    content: longtext nullable
+    status: boolean nullable
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    deleted_at: softDeletes nullable
+    relationships:
+      hasMany: Parameter
+
+  Parameter:
+    code: string:255 nullable unique
+    rank: string:255 nullable
+    slug: string:255 nullable unique
+
+    title: string:255 nullable
+    subtitle: string:255 nullable
+    icon: string:255 nullable
+    class: string:255 nullable
+    color: string:255 nullable
+    content: longtext nullable
+    address: string:255 nullable
+    location: json nullable
+    status: boolean nullable
+    type_parameter_id: id nullable foreign nullable onDelete:null onUpdate:cascade
+    parent_id: id foreign:parameters.id nullable onDelete:null onUpdate:cascade
+
+    setting_id: id nullable foreign nullable onDelete:null onUpdate:cascade
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    deleted_at: softDeletes nullable
+    relationships:
+      hasMany: Parameter:childrens
+
+  Article:
+    code: string:255 nullable unique
+    rank: string:255 nullable
+    slug: string:255 nullable unique
+
+    title: string:255 nullable
+    subtitle: string:255 nullable
+    icon: string:255 nullable
+    content: longtext nullable
+    link: string:255 nullable
+    link_video: string:255 nullable
+    resume: text nullable
+    address: string:255 nullable
+    location: json nullable
+    other: json nullable
+
+    #ecommerce
+    start_at: timestamp nullable
+    end_at: timestamp nullable
+    antidated: timestamp nullable
+    price_buy: double:10,2 nullable
+    price_new: double:10,2 nullable
+    price_old: double:10,2 nullable
+    quantity: double:10,2 nullable
+
+    status: boolean nullable
+    enable: boolean nullable
+
+    rubric_id: id foreign:parameters.id nullable onDelete:null onUpdate:cascade
+    audience_id: id foreign:parameters.id nullable onDelete:null onUpdate:cascade
+
+    setting_id: id nullable foreign nullable onDelete:null onUpdate:cascade
+    parent_id: id foreign:articles.id nullable onDelete:null onUpdate:cascade
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    published_at: timestamp nullable
+    deleted_at: softDeletes nullable
+    relationships:
+      belongsToMany: Parameter, Invoice
+      hasMany: Supply
+
+  Supply:
+    code: string:255 nullable unique
+    type: enum:entrée,sortie nullable
+    quantity: double:10,2 nullable
+    title: string:255 nullable
+    subtitle: string:255 nullable
+    content: longtext nullable
+    status: boolean nullable
+
+    article_id: id foreign:articles.id nullable onDelete:null onUpdate:cascade
+    agent_id: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    vendor_id: id foreign:users.id nullable onDelete:null onUpdate:cascade
+
+    setting_id: id nullable foreign nullable onDelete:null onUpdate:cascade
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    deleted_at: softDeletes nullable
+
+  Address:
+    code: string:255 nullable unique
+    rank: string:255 nullable
+    slug: string:255 nullable unique
+
+    title: string:255 nullable
+    subtitle: string:255 nullable
+    location: json nullable
+    content: longtext nullable
+    status: boolean nullable
+    user_id: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    country_id: id nullable foreign nullable onDelete:null onUpdate:cascade
+
+    setting_id: id nullable foreign nullable onDelete:null onUpdate:cascade
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    deleted_at: softDeletes nullable
+    relationships:
+      hasMany: Invoice
+
+  Invoice:
+    code: string:255 nullable unique
+    content: longtext nullable
+
+    quantity: double:10,2 nullable
+    price_ht: double:10,2 nullable
+    price_tax: double:10,2 nullable
+    price_delivery: double:10,2 nullable
+    price_discount: double:10,2 nullable
+    price_final: double:10,2 nullable
+    planned_at: timestamp nullable
+    exacted_at: timestamp nullable
+    ip: string:255 nullable
+
+    status: boolean nullable
+    relay_id: id foreign:parameters.id nullable onDelete:null onUpdate:cascade
+    delivery_mode_id: id foreign:parameters.id nullable onDelete:null onUpdate:cascade
+    payment_method_id: id foreign:parameters.id nullable onDelete:null onUpdate:cascade
+    deliveryman_id: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    address_id: id foreign:addresses.id nullable onDelete:null onUpdate:cascade
+    state_id: id foreign:parameters.id nullable onDelete:null onUpdate:cascade
+    customer_id: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    commercial_id: id foreign:users.id nullable onDelete:null onUpdate:cascade
+
+    setting_id: id nullable foreign nullable onDelete:null onUpdate:cascade
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    deleted_at: softDeletes nullable
+    relationships:
+      belongsToMany: Article
+
+  Payment:
+    code: string:255 nullable unique
+    moyen: string:255 nullable
+    token: string:255 nullable
+    content: json nullable
+
+    price_ht: double:10,2 nullable
+    price_tax: double:10,2 nullable
+    price_discount: double:10,2 nullable
+    price_final: double:10,2 nullable
+
+    status: boolean nullable
+    invoice_id: id foreign:invoices.id nullable onDelete:null onUpdate:cascade
+    means_payment_id: id foreign:invoices.id nullable onDelete:null onUpdate:cascade
+
+    setting_id: id nullable foreign nullable onDelete:null onUpdate:cascade
+    user_created: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    user_updated: id foreign:users.id nullable onDelete:null onUpdate:cascade
+    deleted_at: softDeletes nullable
