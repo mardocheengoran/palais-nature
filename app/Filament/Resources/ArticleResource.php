@@ -708,10 +708,10 @@ class ArticleResource extends Resource implements HasShieldPermissions
                 ->trueColor('success')
                 ->falseColor('danger'), */
 
-                ToggleColumn::make('status')
+                /* ToggleColumn::make('status')
                     ->label('Valider')
                     ->toggleable()
-                    ->visible(auth()->user()->hasRole(['super_admin', 'admin']) and Cookie::get('rubric') == 125),
+                    ->visible(auth()->user()->hasRole(['super_admin', 'admin']) and Cookie::get('rubric') == 125), */
 
                 TextColumn::make('created_at')
                     ->label('Date')

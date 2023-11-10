@@ -103,7 +103,7 @@
                     </div>
                 @endif
                 <a class="navbar-brand" href="{{ route('welcome') }}">
-                    <img class="pe-5 d-block" style="width: 300px" src="{{ asset('img/logofin.png')}}" alt="logo" />
+                    <img class="pe-5 d-block" style="width: 300px" src="{{ asset('img/logo.png')}}" alt="{{ setting()->title }}" />
                 </a>
                 <livewire:search />
                 {{-- <div class="">

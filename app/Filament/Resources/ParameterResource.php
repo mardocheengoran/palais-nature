@@ -105,7 +105,6 @@ class ParameterResource extends Resource implements HasShieldPermissions
 
                     TextInput::make('icon')
                     ->label('Icône')
-                    ->helperText('Titre pour la page d\accueil')
                     ->maxLength(255),
 
                     TextInput::make('subtitle')
@@ -137,7 +136,7 @@ class ParameterResource extends Resource implements HasShieldPermissions
                     ->visible(in_array($type->id, [17, 24]))
                     ->relationship('parent_filament', 'title', fn (Builder $query) => $query->whereType_parameter_id($type->id)),
 
-                    TextInput::make('board')
+                    /* TextInput::make('board')
                         ->label('Commission')
                         ->helperText('Inserez le pourcentage de la commission')
                         ->numeric()
@@ -149,7 +148,7 @@ class ParameterResource extends Resource implements HasShieldPermissions
                             ->minValue(1) // Set the minimum value that the number can be.
                             ->thousandsSeparator(' '), // Add a separator for thousands.
                         )
-                        ->maxLength(255),
+                        ->maxLength(255), */
                 ]),
 
                 Section::make('Sous menu')->schema([
@@ -182,7 +181,7 @@ class ParameterResource extends Resource implements HasShieldPermissions
                 ->visible(in_array($type->id, [24])),
 
 
-                Grid::make(3)->schema([
+                Grid::make(2)->schema([
                     /* Select::make('type_parameter_id')
                     ->label('Type de paramètre')
                     ->required()
@@ -193,10 +192,10 @@ class ParameterResource extends Resource implements HasShieldPermissions
                     SpatieMediaLibraryFileUpload::make('image')
                     ->collection('image'),
 
-                    SpatieMediaLibraryFileUpload::make('icons')
+                    /* SpatieMediaLibraryFileUpload::make('icons')
                     ->collection('icon')
                     ->label('Icône image')
-                    ->visible(in_array($type->id, [17])),
+                    ->visible(in_array($type->id, [17])), */
 
                     SpatieMediaLibraryFileUpload::make('cover')
                     ->collection('cover')
@@ -297,10 +296,10 @@ class ParameterResource extends Resource implements HasShieldPermissions
                 ->toggleable()
                 ->toggledHiddenByDefault(),
 
-                SpatieMediaLibraryImageColumn::make('icons')
+                /* SpatieMediaLibraryImageColumn::make('icons')
                 ->collection('icon')
                 ->label('Icône image')
-                ->visible(in_array($type->id, [17])),
+                ->visible(in_array($type->id, [17])), */
 
                 TextColumn::make('title')
                 ->label('Titre')
@@ -343,9 +342,9 @@ class ParameterResource extends Resource implements HasShieldPermissions
                 ->toggleable()
                 ->toggledHiddenByDefault(),
 
-                ToggleColumn::make('home')
+                /* ToggleColumn::make('home')
                 ->label('Accueil')
-                ->visible(in_array($type->id, [17])),
+                ->visible(in_array($type->id, [17])), */
 
                 ToggleColumn::make('status')
                 ->toggleable()
