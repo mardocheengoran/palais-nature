@@ -1,222 +1,180 @@
-<!-- Home Popup Section -->
-{{-- <div class="modal fade subscribe_popup" id="onload-popup" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="ion-ios-close-empty"></i></span>
-                </button>
-                <div class="row g-0">
-                    <div class="col-sm-7">
-                        <div class="popup_content text-start">
-                            <div class="popup-text">
-                                <div class="heading_s1">
-                                    <h3>Subscribe Newsletter and Get 25% Discount!</h3>
-                                </div>
-                                <p>Subscribe to the newsletter to receive updates about new products.</p>
-                            </div>
-                            <form method="post">
-                                <div class="mb-3 form-group">
-                                    <input name="email" required type="email" class="form-control" placeholder="Enter Your Email">
-                                </div>
-                                <div class="mb-3 form-group">
-                                    <button class="btn btn-fill-out btn-block text-uppercase" title="Subscribe" type="submit">Subscribe</button>
-                                </div>
-                            </form>
-                            <div class="chek-form">
-                                <div class="custome-checkbox">
-                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox3" value="">
-                                    <label class="form-check-label" for="exampleCheckbox3"><span>Don't show this popup again!</span></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="background_bg h-100" data-img-src="assets/images/popup_img3.jpg"></div>
-                    </div>
-                </div>
+<header class="shadow-sm">
+    <!-- Topbar-->
+    <div class="topbar topbar-dark p-0" style="background-color: #e2b900;">
+        <div class="container">
+            <div class="topbar-text text-nowrap d-none d-md-inline-block">
+                <i class="ci-support"></i><a class="topbar-link" href="tel:+225 0595742026">(+225) 0595742026</a>|
+                <i class="ci-whatsapp"></i><a class="topbar-link" href="https://wa.me/+2250506078925" target="_blank">(+225) 0506078925</a>
+            </div>
+            <div class="ms-3 text-nowrap">
+                <a class="btn-social bs-light bs-facebook ms-2" href="#">
+                    <i class="ci-facebook"></i>
+                </a>
+                <a class="btn-social bs-light bs-instagram ms-2" href="#">
+                    <i class="ci-instagram"></i>
+                </a>
+                <a class="btn-social bs-light bs-pinterest ms-2" href="#">
+                    <i class="ci-tiktok"></i>
+                </a>
             </div>
         </div>
     </div>
-</div> --}}
-<!-- End Screen Load Popup Section -->
-@include('layouts.admin-bar')
+    <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
+    <div class="navbar-sticky bg-light">
+        <div class="navbar navbar-expand-lg navbar-light p-0">
+            <div class="container">
+                <a class="navbar-brand d-none d-sm-block flex-shrink-0" href="index.html">
+                    <img src="img/logo.png" width="100" alt="{{ setting()->title }}" />
+                </a>
+                <a class="navbar-brand d-sm-none flex-shrink-0 me-2" href="index.html">
+                    <img src="img/logo.png" width="74" alt="{{ setting()->title }}" />
+                </a>
+                <div class="input-group d-none d-lg-flex mx-4">
+                    <input class="form-control rounded-end pe-5" type="text" placeholder="Rechercher un produit..." />
+                    <i class="ci-search position-absolute top-50 end-0 translate-middle-y text-muted fs-base me-3"></i>
+                </div>
+                <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="navbar-tool navbar-stuck-toggler" href="#">
+                        <span class="navbar-tool-tooltip">Expand menu</span>
+                        <div class="navbar-tool-icon-box"><i class="navbar-tool-icon ci-menu"></i></div>
+                    </a>
+                    {{-- <a class="navbar-tool d-none d-lg-flex" href="account-wishlist.html">
+                        <span class="navbar-tool-tooltip">Wishlist</span>
+                        <div class="navbar-tool-icon-box"><i class="navbar-tool-icon ci-heart"></i></div>
+                    </a> --}}
+                    @guest
+                        <a class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" href="{{ route('login') }}">
+                            <div class="navbar-tool-icon-box"><i class="navbar-tool-icon ci-user"></i></div>
+                            <div class="navbar-tool-text ms-n3">Se connecter</div>
+                        </a>
+                    @else
+                        <a class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" href="{{ route('profil.index') }}">
+                            <div class="navbar-tool-icon-box">
+                                <i class="navbar-tool-icon ci-user"></i>
+                            </div>
+                            <div class="navbar-tool-text ms-n3">{{ Auth::user()->fullname }}</div>
+                        </a>
+                    @endguest
 
-@guest
-    <div class="py-1 top-header light_skin bg_dark d-none d-md-block">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="px-5 col-lg-12 col-md-12">
-                    <div class="header_topbar_info">
-                        <div class="header_offer">
-                            <a class="text-white" href="{{ route('register') }}?supplier=fournisseur">
-                                Devenez vendeur sur Bezo
-                            </a>
-                        </div>
-                        {{-- <div class="download_wrap">
-                            <span class="me-3">Téléchargez l'application sur</span>
-                            <ul class="text-center icon_list text-lg-start">
-                                <li><a href="#"><i class="fab fa-apple"></i></a></li>
-                                <li><a href="#"><i class="fab fa-android"></i></a></li>
-                            </ul>
+                    <div class="navbar-tool dropdown ms-3">
+                        <a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="{{ route('checkout.cart') }}">
+                            <span class="navbar-tool-label">{{ Cart::instance('shopping')->count() }}</span>
+                            <i class="navbar-tool-icon ci-cart"></i>
+                        </a>
+                        <a class="" href="{{ route('checkout.cart') }}">
+                            Panier
+                        </a>
+                        {{-- <a class="navbar-tool-text" href="{{ route('checkout.cart') }}">
+                            <small>Panier</small>
+                            {{ Cart::instance('shopping')->total() }}
+                        </a> --}}
+                        <!-- Cart dropdown-->
+                        {{-- <div class="dropdown-menu dropdown-menu-end">
+                            <div class="widget widget-cart px-3 pt-2 pb-3" style="width: 20rem;">
+                                <div style="height: 15rem;" data-simplebar data-simplebar-auto-hide="false">
+                                    <div class="widget-cart-item pb-2 border-bottom">
+                                        <button class="btn-close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">&times;</span></button>
+                                        <div class="d-flex align-items-center">
+                                            <a class="flex-shrink-0" href="shop-single-v1.html"><img src="img/shop/cart/widget/01.jpg" width="64" alt="Product" /></a>
+                                            <div class="ps-2">
+                                                <h6 class="widget-product-title"><a href="shop-single-v1.html">Women Colorblock Sneakers</a></h6>
+                                                <div class="widget-product-meta">
+                                                    <span class="text-accent me-2">$150.<small>00</small></span><span class="text-muted">x 1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="widget-cart-item py-2 border-bottom">
+                                        <button class="btn-close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">&times;</span></button>
+                                        <div class="d-flex align-items-center">
+                                            <a class="flex-shrink-0" href="shop-single-v1.html"><img src="img/shop/cart/widget/02.jpg" width="64" alt="Product" /></a>
+                                            <div class="ps-2">
+                                                <h6 class="widget-product-title"><a href="shop-single-v1.html">TH Jeans City Backpack</a></h6>
+                                                <div class="widget-product-meta">
+                                                    <span class="text-accent me-2">$79.<small>50</small></span><span class="text-muted">x 1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="widget-cart-item py-2 border-bottom">
+                                        <button class="btn-close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">&times;</span></button>
+                                        <div class="d-flex align-items-center">
+                                            <a class="flex-shrink-0" href="shop-single-v1.html"><img src="img/shop/cart/widget/03.jpg" width="64" alt="Product" /></a>
+                                            <div class="ps-2">
+                                                <h6 class="widget-product-title"><a href="shop-single-v1.html">3-Color Sun Stash Hat</a></h6>
+                                                <div class="widget-product-meta">
+                                                    <span class="text-accent me-2">$22.<small>50</small></span><span class="text-muted">x 1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="widget-cart-item py-2 border-bottom">
+                                        <button class="btn-close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">&times;</span></button>
+                                        <div class="d-flex align-items-center">
+                                            <a class="flex-shrink-0" href="shop-single-v1.html"><img src="img/shop/cart/widget/04.jpg" width="64" alt="Product" /></a>
+                                            <div class="ps-2">
+                                                <h6 class="widget-product-title"><a href="shop-single-v1.html">Cotton Polo Regular Fit</a></h6>
+                                                <div class="widget-product-meta">
+                                                    <span class="text-accent me-2">$9.<small>00</small></span><span class="text-muted">x 1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
+                                    <div class="fs-sm me-2 py-2">
+                                        <span class="text-muted">Subtotal:</span><span class="text-accent fs-base ms-1">$265.<small>00</small></span>
+                                    </div>
+                                    <a class="btn btn-outline-secondary btn-sm" href="shop-cart.html">Expand cart<i class="ci-arrow-right ms-1 me-n1"></i></a>
+                                </div>
+                                <a class="btn btn-primary btn-sm d-block w-100" href="checkout-details.html"><i class="ci-card me-2 fs-base align-middle"></i>Checkout</a>
+                            </div>
                         </div> --}}
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-4">
-                    {{--  <div class="d-flex align-items-center justify-content-center justify-content-md-end">
-                        <div class="lng_dropdown">
-                            <select name="countries" class="custome_select">
-                                <option value='en' data-image="assets/images/eng.png" data-title="English">English</option>
-                                <option value='fn' data-image="assets/images/fn.png" data-title="France">France</option>
-                                <option value='us' data-image="assets/images/us.png" data-title="United States">United States</option>
-                            </select>
-                        </div>
-                        <div class="ms-3">
-                            <select name="countries" class="custome_select">
-                                <option value='USD' data-title="USD">USD</option>
-                                <option value='EUR' data-title="EUR">EUR</option>
-                                <option value='GBR' data-title="GBR">GBR</option>
-                            </select>
-                        </div>
-                    </div> --}}
+            </div>
+        </div>
+        <div class="navbar navbar-expand-lg navbar-light navbar-stuck-menu mt-n2 pt-0">
+            <div class="container">
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <!-- Search-->
+                    <div class="input-group d-lg-none my-3">
+                        <i class="ci-search position-absolute top-50 start-0 translate-middle-y text-muted fs-base ms-3"></i>
+                        <input class="form-control rounded-start" type="text" placeholder="Search for products" />
+                    </div>
+                    <!-- Primary menu-->
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item {{ Route::is('welcome') ? 'active' : ''  }}">
+                            <a class="nav-link" href="{{ route('welcome') }}">Accueil</a>
+                        </li>
+                        @php($i = 0)
+                        @foreach ($categories as $category)
+                            @php($i++)
+                            <li class="nav-item {{ count($category->childrens) > 0 ? 'dropdown' : '' }} {{ (Route::is('article.index', $category->slug) ? 'active' : '') }}">
+                                <a class="nav-link {{ count($category->childrens) > 0 ? 'dropdown-toggle' : '' }}" href="{{ route('article.index', $category->slug) }}" {{ count($category->childrens) > 0 ? 'data-bs-toggle="dropdown" data-bs-auto-close="outside"' : '' }}>
+                                    {{ $category->title }}
+                                </a>
+                                @if (count($category->childrens))
+                                    <ul class="dropdown-menu">
+                                        @foreach ($category->childrens as $item)
+                                            {!! (!$loop->first) ? '<li class="dropdown-divider"></li>' : '' !!}
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('article.index', $item->slug) }}">
+                                                    {{ $item->title }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-@endguest
-<div class="bg_warning d-none d-md-block">
-    <div class="container">
-        <div class="p-2 text-center text-white h4">
-            -30% sur vos produits tech et livraison gratuite jusqu'au 25 Mai 2023!!
-        </div>
-    </div>
-</div>
 
-<!-- START HEADER -->
-<header class="header_wrap fixed-top header_with_topbar">
-    <div class="bottom_header dark_skin main_menu_uppercase">
-        <div class="container">
-            <div class="nav_block">
-                @if (!Route::is('welcome'))
-                    <div>
-                        @include('layouts.menu')
-                    </div>
-                @endif
-                <a class="navbar-brand" href="{{ route('welcome') }}">
-                    <img class="pe-5 d-block" style="width: 300px" src="{{ asset('img/logo.png')}}" alt="{{ setting()->title }}" />
-                </a>
-                <livewire:search />
-                {{-- <div class="">
-                    <a class="btn-outline dropdown-toggle" type="button" data-bs-toggle="dropdown" id="book-dorpdown" aria-expanded="true">
-                        <i class="linearicons-user"></i> Se connecter</a>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="book-dropdown">
-                        <li><a class="dropdown-item" href="#"> <i class="linearicons-user"></i>Mon Compte</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="linearicons-bag"></i>Vos commandes</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="linearicons-heart"></i>Votre liste d'envies</a></li>
-                        <li><hr class="dropdown-divider" style="opacity:0.4;"></li>
-                        <li><a class="dropdown-item" href="#"><i class="linearicons-power-switch"></i> Deconnexion</a></li>
-                    </ul>
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="linearicons-user"></i>Mon compte</a>
-                        </a>
-                        @auth
-                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#"> <i class="linearicons-user"></i>Mon Compte</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="linearicons-bag"></i>Vos commandes</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="linearicons-heart"></i>Votre liste d'envies</a></li>
-                                <li><hr class="dropdown-divider" style="opacity:0.4;"></li>
-                                <li><a class="dropdown-item" href="#"><i class="linearicons-power-switch"></i> Deconnexion</a></li>
-                            </ul>
-                        @else
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Se connecter</a></li>
-                                <li><a class="dropdown-item" href="#">S'inscrire</a></li>
-                            </ul>
-                        @endauth
-                    </div>
-                </div> --}}
-                <div class="px-3">
-                    <ul class="navbar-nav attr-nav align-items-center">
-                        <li>
-                            <nav class="navbar navbar-expand-lg" style="justify-content: end !important;">
-                                <ul class="navbar-nav">
-                                    <li class="dropdown">
-                                        <a class="dropdown-toggle nav-link" href="#" id="dropdownMenuLink" data-bs-toggle="dropdown">
-                                            <i class="linearicons-user"></i>
-                                        </a>
-                                        @auth
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <li><a class="dropdown-item" href="{{ route('profil.index') }}"> <i class="linearicons-user"></i>Mon Compte</a></li>
-                                                <li><a class="dropdown-item" href="{{ route('invoice.all') }}"><i class="linearicons-bag"></i>Vos commandes</a></li>
-                                                <li><a class="dropdown-item" href="{{ route('wishlist') }}"><i class="linearicons-heart"></i>Votre liste d'envies</a></li>
-                                                <li><hr class="dropdown-divider" style="opacity:0.4;"></li>
-                                                <li>
-                                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                                        <i class="linearicons-power-switch"></i> Déconnexion
-                                                    </a>
-                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                                        @csrf
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        @else
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <li><a class="dropdown-item" href="{{ route('login') }}">Se connecter</a></li>
-                                                <li><a class="dropdown-item" href="{{ route('register') }}">S'inscrire</a></li>
-                                            </ul>
-                                        @endauth
-                                    </li>
-                                </ul>
-                            </nav>
-                        </li>
-                        {{-- <li>
-                            <a href="#" class="nav-link">
-                                <i class="linearicons-heart"></i>
-                                <span class="wishlist_count">0</span>
-                            </a>
-                        </li> --}}
-                        <li class="dropdown cart_dropdown">
-                            <a class="nav-link cart_trigger" href="{{ route('checkout.cart') }}" {{-- data-bs-toggle="dropdown" --}}>
-                                <i class="linearicons-cart-add"></i>
-                                <span class="cart_count">
-                                    {{ Cart::instance('shopping')->count() }}
-                                </span>
-                                Panier
-                            </a>
-                            {{-- <div class="cart_box cart_right dropdown-menu dropdown-menu-right">
-                                <ul class="cart_list">
-                                    <li>
-                                        <a href="#" class="item_remove"><i class="ion-close"></i></a>
-                                        <a href="#"><img src="{{ asset('img/chose.jpg') }}" alt="cart_thumb1">Produit 1</a>
-                                        <span class="cart_quantity"> 2 x <span class="cart_amount"> </span>15 000 <span class="price_symbole">Fr</span> </span>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="item_remove"><i class="ion-close"></i></a>
-                                        <a href="#"><img width="100" src="{{ asset('img/fem.jpg') }}" alt="cart_thumb2">Produit 2</a>
-                                        <span class="cart_quantity"> 1 x <span class="cart_amount"> </span>20 000 <span class="price_symbole">Fr</span> </span>
-                                    </li>
-                                </ul>
-                                <div class="cart_footer">
-                                    <p class="cart_total"><strong>Total:</strong> <span class="cart_price"> </span>50 000 <span class="price_symbole">Fr</span> </p>
-                                    <p class="cart_buttons"><a href="#" class="btn btn-fill-line view-cart">Voir</a><a href="#" class="btn btn-fill-out checkout">Retirer</a></p>
-                                </div>
-                            </div> --}}
-                        </li>
-                        <li class="d-none d-lg-inline-block">
-                            <a href="tel:+225 0703334624" class="nav-link text-warning">
-                                <i class="linearicons-phone-wave"></i>
-                                0703334624
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 </header>
-<!-- END HEADER -->
-@if (Route::is('welcome'))
-    @include('layouts.vertical-menu')
-@endif

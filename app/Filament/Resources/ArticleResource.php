@@ -120,6 +120,7 @@ class ArticleResource extends Resource implements HasShieldPermissions
                                         ->hidden(! in_array('subtitle', $rubric->field)),
 
                                     Select::make('available_id')
+                                        ->required()
                                         ->label('Disponibilité')
                                         ->relationship('available', 'title', fn (Builder $query) => $query->whereType_parameter_id(20))
                                         ->hidden(! in_array('available', $rubric->field)),
@@ -132,7 +133,7 @@ class ArticleResource extends Resource implements HasShieldPermissions
 
                                 RichEditor::make('content')
                                     ->label($rubric->id == 125 ? 'Détails' : 'Description')
-                                    ->required()
+                                    //->required()
                                     ->hidden(! in_array('content', $rubric->field)),
 
                                 SpatieMediaLibraryFileUpload::make('image')
@@ -511,7 +512,7 @@ class ArticleResource extends Resource implements HasShieldPermissions
                             ->collapsible()
                             ->hidden(! in_array('local', $rubric->field)),
 
-                        Section::make('Catégorisation & fournisseur')
+                        Section::make('Catégorisation')
                             ->schema([
                                 Select::make('brand_id')
                                     ->label('Marque')
@@ -524,17 +525,18 @@ class ArticleResource extends Resource implements HasShieldPermissions
                                     ->multiple()
                                     ->relationship('jobs', 'title', fn (Builder $query) => $query->whereType_parameter_id(15)), */
 
-                                /* Select::make('categories')
+                                CheckboxList::make('categories')
                                     ->label('Catégorie')
-                                    ->multiple()
+                                    ->required()
                                     ->relationship('categories', 'title', fn (Builder $query) => $query->whereType_parameter_id(17))
-                                    ->options(Parameter::whereType_parameter_id(17)->orderBy('title', 'asc')->pluck('title', 'id')), */
+                                    //->options(Parameter::whereType_parameter_id(17)->orderBy('title', 'asc')->pluck('title', 'id'))
+                                    ->searchable(),
 
-                                Select::make('category1')
+                                /* Select::make('category1')
                                     ->label('Grande catégorie')
                                     ->required()
                                     ->placeholder('Selectionnez une grande catégorie')
-                                    ->helperText('Exemple : Maison')
+                                    //->helperText('Exemple : Maison')
                                     /* ->default(function (Builder $query, Article $article, string $content) {
                                         if ($content === 'edit') {
                                             $filter = $article->categories->filter(function ($category) {
@@ -543,16 +545,16 @@ class ArticleResource extends Resource implements HasShieldPermissions
                                             return $filter->pluck('id', 'id');
                                         }
                                     }) */
-                                    ->options(Parameter::whereType_parameter_id(17)->where('parent_id', null)->orderBy('title', 'asc')->pluck('title', 'id'))
+                                   /*  ->options(Parameter::whereType_parameter_id(17)->where('parent_id', null)->orderBy('title', 'asc')->pluck('title', 'id'))
                                     ->reactive()
-                                    ->afterStateUpdated(fn (callable $set) => $set('category2', null)),
+                                    ->afterStateUpdated(fn (callable $set) => $set('category2', null)), */
 
-                                Select::make('category2')
+                                /* Select::make('category2')
                                     ->label('Catégorie')
-                                    ->required()
+                                    //->required()
                                     ->reactive()
                                     ->placeholder('Selectionnez une catégorie')
-                                    ->helperText('Exemple : Electroménager')
+                                    //->helperText('Exemple : Electroménager')
                                     ->options(function (callable $get) {
                                         $sous_category = Parameter::find($get('category1'));
                                         if (! $sous_category) {
@@ -560,14 +562,14 @@ class ArticleResource extends Resource implements HasShieldPermissions
                                         }
                                         return $sous_category->childrens()->pluck('title', 'id')->toarray();
                                     })
-                                    ->afterStateUpdated(fn (callable $set) => $set('category3', null)),
+                                    ->afterStateUpdated(fn (callable $set) => $set('category3', null)), */
 
-                                Select::make('category3')
+                                /* Select::make('category3')
                                     ->label('Sous categorie')
-                                    ->required()
+                                    //->required()
                                     ->reactive()
                                     ->placeholder('Selectionnez une sous catégorie')
-                                    ->helperText('Exemple : Mixeurs')
+                                    //->helperText('Exemple : Mixeurs')
                                     ->options(function (callable $get) {
                                         $sous_category2 = Parameter::find($get('category2') );
                                         if (! $sous_category2) {
@@ -581,7 +583,7 @@ class ArticleResource extends Resource implements HasShieldPermissions
                                     ->label('Fournisseur')
                                     ->relationship('supplier', 'store', fn (Builder $query) => $query->role('fournisseur'))
                                     //->options(User::role('fournisseur')->orderBy('store', 'asc')->pluck('store', 'id'))
-                                    ->hidden(!in_array('supplier', $rubric->field) or auth()->user()->hasRole(['fournisseur'])),
+                                    ->hidden(!in_array('supplier', $rubric->field) or auth()->user()->hasRole(['fournisseur'])), */
                             ])
                             ->collapsible()
                             ->hidden(! in_array('category', $rubric->field)),
@@ -603,11 +605,11 @@ class ArticleResource extends Resource implements HasShieldPermissions
                     ->conversion('thumb')
                     ->collection('image'),
 
-                TextColumn::make('supplier.store')
+                /* TextColumn::make('supplier.store')
                     ->searchable()
                     ->sortable()
                     ->label('Fournisseur')
-                    ->visible(Cookie::get('rubric') == 125),
+                    ->visible(Cookie::get('rubric') == 125), */
 
                 TextColumn::make('title')
                     ->label('Titre')
@@ -615,15 +617,15 @@ class ArticleResource extends Resource implements HasShieldPermissions
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('sizes.title')
+                /* TextColumn::make('sizes.title')
                     ->searchable()
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->sortable()
                     ->label('Tailles')
-                    ->visible(Cookie::get('rubric') == 125),
+                    ->visible(Cookie::get('rubric') == 125), */
 
-                BadgeColumn::make('active_size')
+                /* BadgeColumn::make('active_size')
                     ->label('Taille')
                     ->sortable()
                     ->enum([
@@ -634,12 +636,13 @@ class ArticleResource extends Resource implements HasShieldPermissions
                         'success' => 1,
                         'warning' => null,
                     ])
-                    ->visible(Cookie::get('rubric') == 125),
+                    ->visible(Cookie::get('rubric') == 125), */
 
                 TextColumn::make('quantity')
                     ->label('Quantité')
                     ->sortable()
                     ->toggleable()
+                    ->toggledHiddenByDefault()
                     ->visible(Cookie::get('rubric') == 125),
 
                 TextColumn::make('rubric.title')
@@ -708,10 +711,11 @@ class ArticleResource extends Resource implements HasShieldPermissions
                 ->trueColor('success')
                 ->falseColor('danger'), */
 
-                /* ToggleColumn::make('status')
-                    ->label('Valider')
+                ToggleColumn::make('active_size')
+                    ->label('Gamme actif')
                     ->toggleable()
-                    ->visible(auth()->user()->hasRole(['super_admin', 'admin']) and Cookie::get('rubric') == 125), */
+                    ->toggledHiddenByDefault()
+                    ->visible(auth()->user()->hasRole(['super_admin', 'admin']) and Cookie::get('rubric') == 125),
 
                 TextColumn::make('created_at')
                     ->label('Date')

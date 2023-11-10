@@ -21,13 +21,12 @@ class EditParameter extends EditRecord
     }
     protected function afterSave(): void
     {
-        $article = Article::all()->where('category2',$this->record->id);
-
+        /* $article = Article::all()->where('category2',$this->record->id);
         foreach ($article as $key => $value) {
             $value->update([
                 'board' => $this->record->board,
-            ]); 
-        }
+            ]);
+        } */
         //dd($this->record->board,$article->toArray());
     }
 

@@ -39,10 +39,10 @@ class EditArticle extends EditRecord
         $model = $this->form->getState();
         $this->rubric = $model['rubric_id'];
         if ($this->rubric == 125) {
-            $this->category1 =  $model['category1'];
+            /* $this->category1 =  $model['category1'];
             $this->category2 =  $model['category2'];
             $this->category3 =  $model['category3'];
-            $this->category = [$this->category1, $this->category2, $this->category3];
+            $this->category = [$this->category1, $this->category2, $this->category3]; */
             //dd($this->category);
         }
     }
@@ -50,15 +50,15 @@ class EditArticle extends EditRecord
 
     protected function afterSave(): void
     {
-        if ($this->rubric == 125) {
+        /* if ($this->rubric == 125) {
             $category = Parameter::where('id', $this->record->category2)->first();
             $this->record->update([
                 'board' => $category->board,
             ]);
-        }
-        $this->record->categories()->sync($this->category, [
+        } */
+        /* $this->record->categories()->sync($this->category, [
             'user_updated' => Auth::id(),
-        ]);
+        ]); */
         /* $this->record->categories()->attach($this->category2, [
             'user_updated' => Auth::id(),
         ]);

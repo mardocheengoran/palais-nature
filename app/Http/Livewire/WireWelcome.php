@@ -18,13 +18,11 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 class WireWelcome extends Component
 {
     use WithFileUploads, LivewireAlert;
-    public $setting, $articles, $categories, $categoriesHome, $email;
+    public $setting, $articles, $categories, $email;
 
     public $showdiv = false;
     public $search = "";
     public $records;
-    public $empDetails;
-    public $flashes;
 
     public function mount()
     {
@@ -38,23 +36,6 @@ class WireWelcome extends Component
         //->whereHome(1)
         //->limit($limit)
         ->get();
-
-        $this->categoriesHome = Parameter::where('type_parameter_id', 17)
-        ->withCount('products')
-        ->orderByRaw('products_count desc, rank asc, created_at desc')
-        //->whereNull('parent_id')
-        ->whereHome(1)
-        //->limit($limit)
-        ->get();
-        // Eléments du menu
-        //$this->menu = all_menu();
-        //dd($this->categories->toArray());
-
-        // Get flashes
-        $this->flashes = Flash::whereDate('limit_at', '>', Carbon::now())
-        ->orderByRaw('rank asc, created_at desc')
-        ->first();
-        //dd($this->flashes->toArray());
     }
 
     public function render()
