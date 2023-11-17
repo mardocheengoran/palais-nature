@@ -25,7 +25,7 @@ class WireProfil extends Component
     public $user;
     public $valeur, $invoice;
     public $title, $subtitle, $city;
-    public $addresses, $cities;
+    public $addresses, $cities, $countries, $country, $location;
 
     public function mount()
     {
@@ -40,6 +40,9 @@ class WireProfil extends Component
         // Eléments du menu
         //$this->menu = all_menu();
         //dd($this->menu->toArray());
+
+        $this->countries = Country::all()
+        ->sortBy('title');
     }
 
     public function render()
@@ -121,28 +124,67 @@ class WireProfil extends Component
 
     public function addressStore()
     {
-        $this->validate([
+         $this->validate([
             'title' => 'required',
             'subtitle' => 'required',
-            'city' => 'required',
+            'country' => 'required',
         ]);
-        if ($this->valeur) {
-            $this->valeur->update([
-                'title' => $this->title,
-                'subtitle' => $this->subtitle,
-                'city_id' => $this->city,
 
-                'user_updated' => auth()->user()->id,
+        if ($this->city == 270) {
+            $this->validate([
+                'location' => 'required',
             ]);
+        }
+        if ($this->country == 110) {
+            $this->validate([
+                'city' => 'required',
+            ]);
+        }
+
+        if ($this->valeur) {
+            if ($this->city == 270) {
+                $this->valeur->update([
+                    'title' => $this->title,
+                    'subtitle' => $this->subtitle,
+                    'city_id' => $this->city,
+                    'country_id' => $this->country,
+                    'location' => $this->location,
+
+                    'user_updated' => auth()->user()->id,
+                ]);
+            }
+            else{
+                $this->valeur->update([
+                    'title' => $this->title,
+                    'subtitle' => $this->subtitle,
+                    'city_id' => $this->city,
+                    'country_id' => $this->country,
+                    'user_updated' => auth()->user()->id,
+                ]);
+            }
+
             $message = 'Modification effectuée avec succès';
         }
         else {
-            Address::create([
-                'title' => $this->title,
-                'subtitle' => $this->subtitle,
-                'city_id' => $this->city,
-                'user_id' => auth()->user()->id,
-            ]);
+            if ($this->city == 270) {
+                Address::create([
+                    'title' => $this->title,
+                    'subtitle' => $this->subtitle,
+                    'city_id' => $this->city,
+                    'country_id' => $this->country,
+                    'location' => $this->location,
+                    'user_id' => auth()->user()->id,
+                ]);
+            }
+            else{
+                Address::create([
+                    'title' => $this->title,
+                    'subtitle' => $this->subtitle,
+                    'city_id' => $this->city,
+                    'country_id' => $this->country,
+                    'user_id' => auth()->user()->id,
+                ]);
+            }
             $message = 'Ajout effectué avec succès';
         }
 
@@ -161,15 +203,17 @@ class WireProfil extends Component
 
     public function addressEdit($address)
     {
-        $this->valeur = $this->addresses->filter(function($value) use($address){
+        $this->valeur = $this->addresses->filter(function ($value) use ($address) {
             return $value->id == $address;
         })
-        ->first();
+            ->first();
         //dd($this->valeur->toArray());
         journalisation('address openModal edit');
         $this->title = $this->valeur->title;
         $this->subtitle = $this->valeur->subtitle;
         $this->city = $this->valeur->city_id;
+        $this->country = $this->valeur->country_id;
+        $this->location = $this->valeur->location;
     }
 
     public function destroy()

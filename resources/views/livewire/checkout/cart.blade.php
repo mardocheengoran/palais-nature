@@ -3,46 +3,24 @@
     @include('layouts.header')
     @include('livewire.checkout.clear')
 
-    {{-- <div class="modal fade" id="clean-{{ $item->id }}" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content h-100">
-                <div class="modal-header">
-                    <h4 class="modal-title">Retirer du panier</h4>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="text-center font-size-sm alert alert-danger">
-                        Êtes-vous sûr de vouloir supprimer <strong>"{{ $item->name }}"</strong> de votre panier
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Non</button>
-                    <a href="{{ url('panier?rowId='.$item->rowId) }}" class="btn btn-danger btn-shadow btn-sm">
-                        <i class="icofont-trash"></i> Oui
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    <div class="page-title-overlap bg-light">
-        <div class="container py-2 d-lg-flex justify-content-between py-lg-5">
-            <div class="order-lg-2 mb-lg-0">
+    <div class="page-title-overlap bg-primary pt-4">
+        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
                 <nav aria-label="breadcrumb">
-                    <ol class="px-3 breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                    <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
                         <li class="breadcrumb-item">
-                            <a class="" href="{{ route('welcome') }}">
-                                <i class="czi-home"></i>Accueil
+                            <a class="text-nowrap" href="{{ route('welcome') }}">
+                                <i class="ci-home"></i>Accueil
                             </a>
                         </li>
                         <li class="breadcrumb-item text-nowrap active" aria-current="page">Panier</li>
                     </ol>
                 </nav>
             </div>
-            <div class="text-center order-lg-1 pr-lg-4 text-lg-left">
-                <h1 class="mb-0 h3">Votre panier ({{ Cart::instance('shopping')->count() }})</h1>
+            <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+                <h1 class="h3 text-light mb-0">
+                    Votre panier ({{ Cart::instance('shopping')->count() }})
+                </h1>
             </div>
         </div>
     </div>
@@ -52,14 +30,14 @@
             <div class="row">
                 <section class="col-lg-8">
 
-                    {{-- <div class="pt-3 pb-2 mt-1 d-flex justify-content-between align-items-center pb-sm-5">
-                        <a class="pl-2 btn btn-danger btn-sm" href="#clear" data-toggle="modal">
+                    <div class="pt-3 pb-2 mt-1 d-flex justify-content-between align-items-center pb-sm-5">
+                        <a class="pl-2 btn btn-warning btn-sm" href="#" data-bs-toggle="modal" data-bs-target="#clear">
                             <i class="mr-2 icofont-trash"></i>Vider le panier
                         </a>
                         <a class="pl-2 btn btn-primary btn-sm" href="{{ route('welcome') }}">
-                            <i class="mr-2 czi-arrow-left"></i>Poursuivre vos achats
+                            <i class="ci-arrow-left me-2"></i>Poursuivre vos achats
                         </a>
-                    </div> --}}
+                    </div>
                     <div class="table-responsive shop_cart_table">
                         <table class="table table-cards align-items-center" id="simpletable">
                             {{-- <thead>
@@ -99,14 +77,11 @@
                                                     {{ $item->options->size }}
                                                 </span>
                                             </div> --}}
-                                            <div>
-                                                Vendeur : {{ $article->supplier->store }}
-                                            </div>
-                                            <div class="text-muted">
+                                            {{-- <div class="text-muted">
                                                 @if ($item->options->size)
                                                     Taille : {{ $item->options->size }}
                                                 @endif
-                                            </div>
+                                            </div> --}}
                                         </td>
                                         <td class="text-end fw-bolder fs-5" data-title="Price">
                                             {{ devise($item->price * $item->qty) }}
@@ -214,7 +189,7 @@
 
                             <div class="text-center border-top">
                                 @auth
-                                    <button wire:loading.class="bg-dark" wire:loading.attr="disabled" wire:click='next' class="mt-4 btn btn-warning btn-shadow btn-block text-uppercase">
+                                    <button wire:loading.class="bg-dark" wire:loading.attr="disabled" wire:click='next' class="mt-4 btn btn-warning btn-shadow w-100 text-uppercase">
                                         <i class="mr-2 czi-card font-size-lg"></i> Valider ma commander
                                         <div wire:loading wire:target="next">
                                             <span class="spinner-border spinner-border-sm"></span>
@@ -226,22 +201,13 @@
                                         </button>
                                     @endcan --}}
                                 @else
-                                    <button wire:loading.class="bg-dark" wire:loading.attr="disabled" wire:click='next' class="mt-4 btn btn-warning btn-shadow btn-block">
+                                    <button wire:loading.class="bg-dark" wire:loading.attr="disabled" wire:click='next' class="mt-4 btn btn-warning btn-shadow w-100 text-uppercase">
                                         <i class="mr-2 czi-card font-size-lg"></i> Valider ma commander
                                         <div wire:loading wire:target="next">
                                             <span class="spinner-border spinner-border-sm"></span>
                                         </div>
                                     </button>
                                 @endauth
-                            </div>
-
-                            <div class="pt-3 mt-3 text-center row border-top fs-4">
-                                <div class="col-12">
-                                    Commander par appel
-                                    <div class="fs-3 fw-bolder">
-                                        +225 07 03 33 46 24
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -306,7 +272,7 @@
                 $('#clear, #delete').modal('hide');
             });
             window.addEventListener('closeModal', event => {
-                $("#delete_confirm").modal('hide');
+                $("#clear, #delete").modal('hide');
             })
         </script>
     @endpush

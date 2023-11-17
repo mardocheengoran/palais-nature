@@ -35,6 +35,7 @@ class WireCategory extends Component
         $this->setting = setting();
 
         $this->categories = Parameter::where('type_parameter_id', 17)
+        ->with('products')
         ->orderByRaw('rank asc, created_at desc')
         ->whereNull('parent_id')
         //->limit($limit)

@@ -136,9 +136,9 @@ class ParameterResource extends Resource implements HasShieldPermissions
                     ->visible(in_array($type->id, [17, 24]))
                     ->relationship('parent_filament', 'title', fn (Builder $query) => $query->whereType_parameter_id($type->id)),
 
-                    /* TextInput::make('board')
-                        ->label('Commission')
-                        ->helperText('Inserez le pourcentage de la commission')
+                    TextInput::make('board')
+                        ->label('Livraison')
+                        ->helperText('Insérez le cout de livraison')
                         ->numeric()
                         ->minValue(1)
                         ->mask(fn (TextInput\Mask $mask) => $mask
@@ -148,7 +148,8 @@ class ParameterResource extends Resource implements HasShieldPermissions
                             ->minValue(1) // Set the minimum value that the number can be.
                             ->thousandsSeparator(' '), // Add a separator for thousands.
                         )
-                        ->maxLength(255), */
+                        ->maxLength(255)
+                        ->visible(in_array($type->id, [2])),
                 ]),
 
                 Section::make('Sous menu')->schema([
@@ -190,6 +191,7 @@ class ParameterResource extends Resource implements HasShieldPermissions
                     ->disabled(), */
 
                     SpatieMediaLibraryFileUpload::make('image')
+                    //->usingFileName()
                     ->collection('image'),
 
                     /* SpatieMediaLibraryFileUpload::make('icons')
@@ -312,6 +314,13 @@ class ParameterResource extends Resource implements HasShieldPermissions
                 ->toggledHiddenByDefault()
                 ->searchable(),
 
+                TextColumn::make('board')
+                ->label('Cout de livraison')
+                ->money('xof')
+                ->toggleable()
+                ->toggledHiddenByDefault()
+                ->visible(in_array($type->id, [2])),
+
                 TextColumn::make('products_count')
                 ->label('Nbr. produits')
                 ->extraAttributes(['class' => 'flex justify-center'])
@@ -342,9 +351,9 @@ class ParameterResource extends Resource implements HasShieldPermissions
                 ->toggleable()
                 ->toggledHiddenByDefault(),
 
-                /* ToggleColumn::make('home')
+                ToggleColumn::make('home')
                 ->label('Accueil')
-                ->visible(in_array($type->id, [17])), */
+                ->visible(in_array($type->id, [17])),
 
                 ToggleColumn::make('status')
                 ->toggleable()

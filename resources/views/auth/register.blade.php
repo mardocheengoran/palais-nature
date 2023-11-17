@@ -325,7 +325,7 @@
                                     <input wire:model='terms' type="checkbox" class="custom-control-input" id="check-terms" />
                                     <label class="custom-control-label" for="check-terms">
                                         <span class="ms-4">
-                                            J'accepte les <a href="#" data-bs-toggle="modal" data-bs-target="#modal_1">termes et conditions</a>
+                                            J'accepte les {{-- <a href="#" data-bs-toggle="modal" data-bs-target="#modal_1"> --}}termes et conditions{{-- </a> --}}
                                         </span>
                                     </label>
                                 </div>
@@ -338,7 +338,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <button type="button" wire:loading.class="text-white bg-dark" wire:loading.attr="disabled" wire:click='next' class="btn btn-warning btn-icon rounded-pill btn-lg btn-block">
+                        <button type="button" wire:loading.class="text-white bg-dark" wire:loading.attr="disabled" wire:click='next' class="btn btn-warning btn-icon btn-lg btn-block">
                             <span class="btn-inner--text">Créer mon compte</span>
                             <span class="btn-inner--icon"><i class="fas fa-long-arrow-alt-right"></i></span>
                             <div wire:loading wire:target='next'>

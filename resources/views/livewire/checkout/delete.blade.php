@@ -3,9 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Vider panier</h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="ion-ios-close-empty"></i></span>
-                </button>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-2">
                 <p class="font-size-sm alert alert-warning text-center">
@@ -13,8 +11,8 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Annuler</button>
-                <button  wire:loading.class="bg-dark" wire:loading.attr="disabled" wire:click='destroy' class="btn btn-danger btn-shadow btn-sm">
+                <button class="btn btn-secondary btn-sm" type="button" data-bs-dismiss="modal" aria-label="Close">Fermer</button>
+                <button  wire:loading.class="bg-dark" wire:loading.attr="disabled" wire:click='destroy' class="btn btn-primary btn-shadow btn-sm">
                     <i class="icofont-trash"></i> Supprimer
                     <div wire:loading wire:target="destroy">
                         <span class="spinner-border spinner-border-sm"></span>

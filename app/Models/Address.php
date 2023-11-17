@@ -83,7 +83,6 @@ class Address extends Model implements HasMedia
         self::creating(function ($model) {
             $model->user_created = auth()->user()->id;
             $model->setting_id = 1;
-            $model->country_id = 110;
         });
     }
 

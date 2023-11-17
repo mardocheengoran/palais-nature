@@ -9,21 +9,19 @@
                         Nouvelle adresse de livraison
                     @endisset
                 </h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="ion-ios-close-empty"></i></span>
-                </button>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="p-3 modal-body">
                 <div class="row">
-                    {{-- <div class="col-sm-6">
+                    <div class="col-12">
                         <div class="form-group">
                             <label for="country">
                                 Pays <span class="text-danger">*</span>
                             </label>
-                            <select name="country" class="custom-select" id="country" required>
+                            <select name="country" wire:model='country' class="form-control" id="country" required>
                                 <option value="">-------Pays-------</option>
                                 @foreach ($countries as $item)
-                                    <option value="{{ $item->id }}" {{ ($item->id == 110) ? 'selected' : '' }}>
+                                    <option value="{{ $item->id }}">
                                         {{ $item->title }}
                                     </option>
                                 @endforeach
@@ -35,7 +33,50 @@
                                 </div>
                             @enderror
                         </div>
-                    </div> --}}
+                    </div>
+
+                    @if ($country == 110)
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="address-city">
+                                    Ville <span class="text-danger">*</span>
+                                </label>
+                                {{-- <input value="{{ old('ville') }}" name="ville" class="form-control" type="text" id="address-city" required> --}}
+                                <select wire:model='city' name="city" class="custom-select" id="city" required>
+                                    <option value="">-------Commune-------</option>
+                                    @foreach ($cities as $item)
+                                        <option value="{{ $item->id }}" {{ ($item->id == 110) ? 'selected' : '' }}>
+                                            {{ $item->title }}
+                                        </option>
+                                    @endforeach
+                                    @error('city')
+                                        <div class="text-danger">
+                                            <strong>{{ $message }}</strong>
+                                        </div>
+                                    @enderror
+                                </select>
+                                @error('city')
+                                    <div class="text-danger">
+                                        <strong>{{ $message }}</strong>
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    @endif
+                    @if ($city == 270)
+                        <div class="form-group mb-3">
+                            <label for="location" class="form-label">
+                                Nom de la localité <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" wire:model='location' class="form-control"  id="location" placeholder="Yamoussoukro" required>
+                        </div>
+                    @endif
+                    @error('location')
+                        <div class="text-danger">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
+
                     <div class="col-12">
                         <div class="form-group">
                             <label for="title">
@@ -52,53 +93,13 @@
                     </div>
                     <div class="col-12">
                         <div class="form-group">
-                            <label for="address-city">
-                                Ville <span class="text-danger">*</span>
-                            </label>
-                            {{-- <input value="{{ old('ville') }}" name="ville" class="form-control" type="text" id="address-city" required> --}}
-                            <select wire:model='city' name="city" class="custom-select" id="city" required>
-                                <option value="">-------Commune-------</option>
-                                @foreach ($cities as $item)
-                                    <option value="{{ $item->id }}" {{ ($item->id == 110) ? 'selected' : '' }}>
-                                        {{ $item->title }}
-                                    </option>
-                                @endforeach
-                                @error('city')
-                                    <div class="text-danger">
-                                        <strong>{{ $message }}</strong>
-                                    </div>
-                                @enderror
-                            </select>
-                            @error('city')
-                                <div class="text-danger">
-                                    <strong>{{ $message }}</strong>
-                                </div>
-                            @enderror
-
-                            @if ($city == 270)
-                               <div class="form-group mb-3">
-                                    <label for="location" class="form-label">
-                                        Nom de la ville <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" wire:model='location' class="form-control"  id="location" placeholder="Yamoussoukro" required>
-                              </div>  
-                            @endif
-                            @error('location')
-                                <div class="text-danger">
-                                    <strong>{{ $message }}</strong>
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
                             <label for="subtitle">
                                 N°téléphone <span class="text-danger">*</span>
                             </label>
                             <input wire:model='subtitle' name="subtitle" class="form-control" type="text" id="subtitle" required>
-                            @error('city')
+                            @error('subtitle')
                                 <div class="text-danger">
-                                    <strong>Veuillez indiquer votre numéro de téléphone !</strong>
+                                    <strong>V{{ $message }}</strong>
                                 </div>
                             @enderror
                         </div>

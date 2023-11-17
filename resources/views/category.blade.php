@@ -4,138 +4,74 @@
 
     @include('layouts.header')
 
-    <div class="breadcrumb_section page-title-mini bg-category" style="background-image: url({{ !empty($rubric->getMedia('cover')->first()) ? url($rubric->getMedia('cover')->first()->getUrl()) : url($rubric->getMedia('image')->first()->getUrl()) }})">
-        <div class="mask">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-12">
-                        <div class="page-title">
-                            <h1 class="text-center text-white">{{ $title }}</h1>
-                        </div>
-                    </div>
-                    {{-- <div class="col-md-6">
-                        <ol class="breadcrumb justify-content-md-end">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                            <li class="breadcrumb-item active">Shop List</li>
-                        </ol>
-                    </div> --}}
-                </div>
+    <div class="page-title-overlap bg-primary pt-4">
+        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                        <li class="breadcrumb-item">
+                            <a class="text-nowrap" href="{{ route('welcome') }}">
+                                <i class="czi-home"></i>Accueil
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item text-nowrap active" aria-current="page">
+                            {{ $title }}
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
+                <h1 class="h3 text-light mb-0">{{ $title }}</h1>
             </div>
         </div>
     </div>
-
-    <div class="main_content">
-        @if (count($rubric->childrens))
-            <div class="py-4">
-                <div class="container">
-                    <div class="p-3 shadow-lg card" style="margin-top: -100px;">
-                        <div class="row justify-content-center">
-                            <div class="col-md-12">
-                                <div class="heading_s1">
-                                    <h2 class="text-warning">Sous catégories</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="product_slider carousel_slider owl-carousel owl-theme nav_style1" data-loop="false" data-dots="false" data-nav="true" data-margin="5" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "6"}, "1199":{"items": "5"}}'>
-                                    @foreach ($rubric->childrens as $item)
-                                        <div class="item">
-                                            <div class="product">
-                                                <a href="{{ route('article.index', $item->slug) }}">
-                                                    <div class="product_img">
-                                                        @if(!empty($item->getMedia('image')->first()))
-                                                            <img src="{{ url($item->getMedia('image')->first()->getUrl('thumb')) }}" alt="{{ $item->title }}">
-                                                        @endif
-                                                    </div>
-                                                </a>
-                                                <div class="product_info">
-                                                    <h6 class="product_title">
-                                                        <a href="{{ route('article.index', $item->slug) }}">
-                                                            {{ $item->title }}
-                                                        </a>
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </div>
+    <div class="container pb-5 mb-2 mb-md-4">
+        <div class="row">
+            <!-- Content  -->
+            <section class="col-lg-12">
+                <!-- Toolbar-->
+                <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
+                    <div class="d-flex flex-wrap">
+                        <div class="d-flex align-items-center flex-nowrap me-3 me-sm-4 pb-3">
+                            <form method="GET" action="{{ Request::fullUrl() }}" class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
+                                @csrf
+                                {{-- <label class="text-light opacity-75 text-nowrap mr-2 d-none d-sm-block" for="sorting">
+                                    Trier par:
+                                </label>
+                                <select name="trier" class="form-control custom-select" id="sorting" onChange="this.form.submit()">
+                                    @foreach (specific_article($articles, 18) as $article)
+                                        <option value="{{ $item->id }}" {{ ($item->id == request('trier')) ? 'selected' : '' }} >
+                                            {{ $item->title }}
+                                        </option>
                                     @endforeach
-                                </div>
-                            </div>
+                                </select> --}}
+                                <span class="font-size-sm text-light opacity-75 text-nowrap ml-2 d-none d-md-block">
+                                    {{ count($rubric->products) }} produits
+                                </span>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endif
-
-
-        @if (count($rubric->products))
-            <div class="pb-0 section small_pt">
-                <div class="container">
-                    <div class="p-3 card">
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="p-3 pb-5 mb-3 heading_s2">
-                                            <div class="pb-2 h3 position-absolute text-danger">Les plus demandés</div>
-                                            {{-- <div class="end-0 position-absolute me-2">
-                                                <a href="#" class="text-white">Découvrez +</a>
-                                            </div> --}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="product_slider carousel_slider owl-carousel owl-theme dot_style1" data-loop="true" data-margin="20" data-responsive='{"0":{"items": "2"}, "481":{"items": "2"}, "768":{"items": "3"}, "991":{"items": "6"}}'>
-                                            @foreach ($rubric->products->take(12) as $article)
-                                                @include('item-shop', [
-                                                    'articles' => $article,
-                                                    'thumb' => 'thumb',
-                                                ])
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-
-        <div class="pb-0 section small_pt">
-            <div class="container">
-                <div class="card p-3">
+                <div class="infinite-scroll">
                     <div class="row">
-                        <div class="col-12">
-                            <header class="section-header my-4">
-                                <h3>{{ $title }}</h3>
-                            </header>
-                        </div>
+                        @foreach ($products as $article)
+                            @include('item-shop', [
+                                'articles' => $article,
+                                'column' => 'col-md-3 col-6',
+                                'thumb' => 'thumb',
+                            ])
+                        @endforeach
                     </div>
-                    <div class="infinite-scroll">
-                        <div class="row">
-                            @foreach ($products as $article)
-                                @include('item-shop', [
-                                    'articles' => $article,
-                                    'column' => 'col-md-2 col-6',
-                                    'thumb' => 'thumb',
-                                ])
-                            @endforeach
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-center">
-                                {{ $products->withQueryString()->links() }}
-                            </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            {{ $products->withQueryString()->links() }}
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
-
     </div>
+
 
     @push('script')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>

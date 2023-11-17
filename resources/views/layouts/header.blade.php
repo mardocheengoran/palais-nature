@@ -7,7 +7,12 @@
                 <i class="ci-whatsapp"></i><a class="topbar-link" href="https://wa.me/+2250506078925" target="_blank">(+225) 0506078925</a>
             </div>
             <div class="ms-3 text-nowrap">
-                <a class="btn-social bs-light bs-facebook ms-2" href="#">
+                @foreach (specific_article($articles, 23) as $article)
+                    <a {{ ($article->link == '#' or !$article->link) ? '' : 'target=_blank' }} href="{{ $article->link ? $article->link : '#' }}" class="btn-social bs-light bs-{{ $article->title }} ms-2">
+                        <i class="{{ $article->icon }}"></i>
+                    </a>
+                @endforeach
+                {{-- <a class="btn-social bs-light bs-facebook ms-2" href="#">
                     <i class="ci-facebook"></i>
                 </a>
                 <a class="btn-social bs-light bs-instagram ms-2" href="#">
@@ -15,7 +20,7 @@
                 </a>
                 <a class="btn-social bs-light bs-pinterest ms-2" href="#">
                     <i class="ci-tiktok"></i>
-                </a>
+                </a> --}}
             </div>
         </div>
     </div>
@@ -23,11 +28,11 @@
     <div class="navbar-sticky bg-light">
         <div class="navbar navbar-expand-lg navbar-light p-0">
             <div class="container">
-                <a class="navbar-brand d-none d-sm-block flex-shrink-0" href="index.html">
-                    <img src="img/logo.png" width="100" alt="{{ setting()->title }}" />
+                <a class="navbar-brand d-none d-sm-block flex-shrink-0" href="{{ route('welcome') }}">
+                    <img src="{{ asset('img/logo.png') }}" width="100" alt="{{ setting()->title }}" />
                 </a>
-                <a class="navbar-brand d-sm-none flex-shrink-0 me-2" href="index.html">
-                    <img src="img/logo.png" width="74" alt="{{ setting()->title }}" />
+                <a class="navbar-brand d-sm-none flex-shrink-0 me-2" href="{{ route('welcome') }}">
+                    <img src="{{ asset('img/logo.png') }}" width="74" alt="{{ setting()->title }}" />
                 </a>
                 <div class="input-group d-none d-lg-flex mx-4">
                     <input class="form-control rounded-end pe-5" type="text" placeholder="Rechercher un produit..." />
@@ -143,7 +148,7 @@
                     <!-- Search-->
                     <div class="input-group d-lg-none my-3">
                         <i class="ci-search position-absolute top-50 start-0 translate-middle-y text-muted fs-base ms-3"></i>
-                        <input class="form-control rounded-start" type="text" placeholder="Search for products" />
+                        <input class="form-control rounded-start" type="text" placeholder="Rechercher un produit..." />
                     </div>
                     <!-- Primary menu-->
                     <ul class="navbar-nav mx-auto">
@@ -153,8 +158,8 @@
                         @php($i = 0)
                         @foreach ($categories as $category)
                             @php($i++)
-                            <li class="nav-item {{ count($category->childrens) > 0 ? 'dropdown' : '' }} {{ (Route::is('article.index', $category->slug) ? 'active' : '') }}">
-                                <a class="nav-link {{ count($category->childrens) > 0 ? 'dropdown-toggle' : '' }}" href="{{ route('article.index', $category->slug) }}" {{ count($category->childrens) > 0 ? 'data-bs-toggle="dropdown" data-bs-auto-close="outside"' : '' }}>
+                            <li class="nav-item {{ count($category->childrens) > 0 ? 'dropdown' : '' }} {{ (Route::is('article.index') and $category->slug == $slug) ? 'active' : '' }}">
+                                <a class="nav-link {{ count($category->childrens) > 0 ? 'dropdown-toggle' : '' }}" href="{{ route('article.index', $category->slug) }}" {{ count($category->childrens) > 0 ? 'data-bs-toggle=dropdown data-bs-auto-close=outside' : '' }}>
                                     {{ $category->title }}
                                 </a>
                                 @if (count($category->childrens))

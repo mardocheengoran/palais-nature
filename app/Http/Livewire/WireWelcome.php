@@ -18,7 +18,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 class WireWelcome extends Component
 {
     use WithFileUploads, LivewireAlert;
-    public $setting, $articles, $categories, $email;
+    public $setting, $articles, $categories, $email, $categoriesHome;
 
     public $showdiv = false;
     public $search = "";
@@ -32,6 +32,14 @@ class WireWelcome extends Component
         $this->categories = Parameter::where('type_parameter_id', 17)
         ->withCount('products')
         ->orderByRaw('rank asc, created_at desc')
+        ->whereNull('parent_id')
+        //->whereHome(1)
+        //->limit($limit)
+        ->get();
+
+        $this->categoriesHome = Parameter::where('type_parameter_id', 17)
+        ->withCount('products')
+        ->orderByRaw('home desc, products_count desc, rank asc, created_at desc')
         ->whereNull('parent_id')
         //->whereHome(1)
         //->limit($limit)

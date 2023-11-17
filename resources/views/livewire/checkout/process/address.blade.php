@@ -32,8 +32,12 @@
                                             @if ($item->city_id == 270)
                                                 {{ $item->location }}
                                             @else
-                                                {{ isset($item->city->title) ? $item->city->title : '' }}
-                                            @endif |
+                                                @if ($item->country_id == 110)
+                                                    {{ isset($item->city->title) ? $item->city->title : '' }} |
+                                                @else
+                                                    {{ isset($item->country->title) ? $item->country->title : '' }} |
+                                                @endif
+                                            @endif
                                             <i class="text-muted" style="font-size: 12px;">({{ $item->subtitle }})</i>
                                         </span>
                                     </label>

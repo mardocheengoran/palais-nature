@@ -4,7 +4,7 @@
 
     @include('layouts.header')
 
-    <div class="breadcrumb_section page-title-mini bg-category" style="background-image: url('{{ $setting->getMedia('cover')->first() ? url($setting->getMedia('cover')->first()->getUrl('normal')) : '' }}'); background-position: center center;">
+    <div class="breadcrumb_section page-title-mini bg-category" style="background-repeat: no-repeat; background-image: url('{{ $setting->getMedia('cover')->first() ? url($setting->getMedia('cover')->first()->getUrl()) : '' }}'); background-size: cover;">
         <div class="mask">
             <div class="container">
                 <div class="row align-items-center">
@@ -106,7 +106,7 @@
                                 <div class="mt-3 d-flex justify-content-center">
                                     {{-- <button wire:click="store" class="btn btn-warning btn-block" type="submit">Envoyer votre message</button> --}}
 
-                                    <button type="button" wire:click="store" wire:loading.class="bg-dark" wire:loading.attr="disabled" class="mt-4 btn btn-dark btn-shadow btn-block text-uppercase" href="#">
+                                    <button type="button" wire:click="store" wire:loading.class="bg-dark" wire:loading.attr="disabled" class="mt-4 btn btn-primary btn-shadow btn-block text-uppercase" href="#">
                                         <i class="mr-2 icofont-paper-plane font-size-lg"></i> Envoyer votre message
                                         <div wire:loading wire:target="store">
                                             <span class="spinner-border spinner-border-sm"></span>

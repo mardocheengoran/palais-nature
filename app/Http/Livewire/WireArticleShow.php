@@ -136,39 +136,9 @@ class WireArticleShow extends Component
         if (empty($this->quantity)) {
             $this->quantity = 1;
         }
-        if ($this->article->active_size) {
-            $this->validate([
-                'size' => 'required',
-            ]);
-            // Déterminer la quantité d'article d'un produit en fonction de sa taille
-            $sizes = $this->article->sizes->filter(function ($size) {
-                return $size->title == $this->size;
-            })->first();
-            // Déterminer la quantité et la taille d'un produit
-            $cart = Cart::instance('shopping')->content()->filter(function ($value) {
-                return $value->id == $this->article->code;
-            });
-            $cart = $cart->filter(function ($value) {
-                return $value->options->size == $this->size;
-            });
-            //dd($sizes->toArray());
-            if ($sizes and $sizes->pivot->quantity < $this->quantity) {
-                return $this->alert('error', 'Impossible d\'ajouter '.$this->quantity.' article(s) du produit "'.$this->article->title.'" de la taille "'.$this->size.'" au panier', [
-                    'position' => 'top-end',
-                    'timer' => 50000,
-                    'toast' => true,
-                    'showCancelButton' => true,
-                    'cancelButtonText' => 'Fermer',
-                ]);
-            }
-            //dd($sizes->toArray());
-        }
-
-        Cart::instance('shopping')->add($this->article->code, $this->article->title, $this->quantity, $this->amount, 0, [
-            'size' => $this->size,
-        ]);
+        Cart::instance('shopping')->add($this->article->code, $this->article->title, $this->quantity, $this->amount);
         $this->alert('success', 'Ajout de "'.$this->article->title.'" au panier effectué avec succès', [
-            'position' => 'top-end',
+            'position' => 'top-start',
             'timer' => 5000,
             'toast' => true,
             'showCancelButton' => true,

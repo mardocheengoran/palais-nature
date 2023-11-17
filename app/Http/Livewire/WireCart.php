@@ -165,7 +165,7 @@ class WireCart extends Component
         }
         else {
             Cookie::queue(Cookie::make('mode', 1, 60*60*24*365));
-            Cookie::queue(Cookie::make('return', url()->current(), 60*60*24));
+            Cookie::queue(Cookie::make('return', route('checkout.cart'), 60*60*24));
             redirect()->route('register');
         }
     }

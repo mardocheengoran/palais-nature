@@ -40,6 +40,7 @@ class WireProfile extends Component
         // Eléments du menu
         //$this->menu = all_menu();
         //dd($this->menu->toArray());
+        $this->title = 'Modifier mon profil';
     }
 
     public function render()
@@ -111,7 +112,7 @@ class WireProfile extends Component
         ->get();
         return view('profile.show')
         ->extends('layouts.app', [
-            'title' => 'Accueil',
+            'title' => $this->title,
             'setting' => $this->setting,
             'articles' => $this->articles,
             'categories' => $this->categories,

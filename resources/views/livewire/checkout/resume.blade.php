@@ -1,7 +1,7 @@
 <x-slot name="title">Résumé</x-slot>
 <div>
     @include('composant.header.header-1')
-    <div class="page-title-overlap bg-dark">
+    <div class="page-title-overlap bg-primary">
         <div class="container d-lg-flex justify-content-between py-2 py-lg-5">
             <div class="order-lg-2 mb-lg-0">
                 <nav aria-label="breadcrumb">

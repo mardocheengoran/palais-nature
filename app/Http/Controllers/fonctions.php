@@ -363,7 +363,8 @@ function invoice_create()
         'price_delivery' => $price_delivery,
         'price_final' => $price_final,
         'customer_id' => auth()->user()->id,
-        //'state_id' => 47,
+        'delivery_mode_id' => 175,
+        'state_id' => 47,
         'ip' => request()->ip(),
         'user_created' => auth()->user()->id,
         //'benefit' => $benefit,
@@ -391,6 +392,7 @@ function invoice_MAJ($invoice)
         'price_delivery' => $price_delivery,
         'price_final' => $price_final,
         'customer_id' => auth()->user()->id,
+        'delivery_mode_id' => 175,
         'state_id' => 47,
         'ip' => request()->ip(),
         'user_updated' => auth()->user()->id

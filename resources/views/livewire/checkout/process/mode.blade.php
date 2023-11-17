@@ -1,6 +1,6 @@
 <div class="card shadow mb-3">
     <div class="card-header">
-        @if ($invoice->delivery_mode_id)
+        {{-- @if ($invoice->delivery_mode_id)
             <div class="position-absolute end-0">
                 <button wire:loading.attr="disabled" type="button" class="text-warning btn btn-sm" wire:click='modeDelete'>
                     <i class="icofont-pencil"></i>
@@ -10,7 +10,7 @@
                     </div>
                 </button>
             </div>
-        @endif
+        @endif --}}
         <i class="icofont-check-circled {{ $invoice->delivery_mode_id ? 'bg-success text-white rounded-circle' : '' }}"></i>
         1. Mode de livraison
     </div>

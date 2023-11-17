@@ -5,18 +5,21 @@ namespace App\Http\Livewire;
 use App\Mail\InvoiceMail;
 use App\Models\Address;
 use App\Models\Article;
+use App\Models\Country;
 use App\Models\Deal;
 use App\Models\Delivery;
 use App\Models\Invoice;
 use App\Models\Parameter;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Mail;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use SoapClient;
 
 class WireCheckout extends Component
 {
@@ -47,6 +50,10 @@ class WireCheckout extends Component
     public $addresses;
 
     public $cities;
+
+    public $countries;
+
+    public $country;
 
     public $title;
 
@@ -95,6 +102,9 @@ class WireCheckout extends Component
         ])
         ->orderByRaw('rank asc, title asc')
         ->get();
+
+        $this->countries = Country::all()
+            ->sortBy('title');
 
         $this->relays = Article::where([
             'rubric_id' => 263,
@@ -192,22 +202,12 @@ class WireCheckout extends Component
             toast('Panier vide', 'warning')->autoClose(15000);
             redirect()->route('checkout.cart');
         } else {
-            $suppliers = $this->invoice->articles
-                ->groupBy('supplier_id');
-            $end = Address::find($this->address)->city_id;
-            //dd($end);
-            $amount = 0;
-            foreach ($suppliers as $key => $value) {
-                $start = User::find($key)->city_id;
-                $delivery = Delivery::where([
-                    'start_id' => $start,
-                    'end_id' => $end,
-                ])
-                ->first();
-                if ($delivery) {
-                    $amount += $delivery->amount;
-                }
-                //dd($start, $end, $amount);
+            $address = Address::find($this->address);
+            if ($address->country_id == 110) {
+                $amount = Parameter::find($address->city_id)->board;
+            }
+            else {
+                $amount = Country::find($address->country_id)->icon;
             }
             $price_final = $this->invoice->price_ht + $amount;
             $this->invoice->update([
@@ -271,7 +271,37 @@ class WireCheckout extends Component
             toast('Panier vide', 'warning')->autoClose(15000);
             redirect()->route('checkout.cart');
         } else {
-            $this->invoice->update([
+            ini_set("soap.wsdl_cache_enabled", 0);
+            $url="https://www.paiementpro.net/webservice/OnlineServicePayment_v2.php?wsdl";
+            $client = new SoapClient($url,array('cache_wsdl' => WSDL_CACHE_NONE));
+            $array=array('merchantId'=>'PP-F105',
+                'countryCurrencyCode'=>'952',
+                'amount'=>$this->invoice->price_final,
+                'customerId' => $user->code,
+                'channel'=> $this->payment,
+                'customerEmail'=> $user->email,
+                'customerFirstName'=> $user->first_name,
+                'customerLastname'=> $user->name,
+                'customerPhoneNumber'=> $user->phone,
+                'referenceNumber'=> $this->invoice->code,
+                'notificationURL'=>'http://test.ci/notification/',
+                'returnURL'=>'http://test.ci/return/',
+                'description'=>'achat en ligne',
+                'returnContext'=>'test=2&ok=1&oui=2',
+            );
+            try{
+                $response=$client->initTransact($array);
+                if($response->Code==0){
+                    //var_dump($response->Sessionid);die();
+                    //header("Location:https://www.paiementpro.net/webservice/onlinepayment/processing_v2.php?sessionid=".$response->Sessionid);
+                    redirect("https://www.paiementpro.net/webservice/onlinepayment/processing_v2.php?sessionid=".$response->Sessionid);
+                }
+            }
+            catch(Exception $e)
+            {
+                echo $e->getMessage();
+            }
+            /* $this->invoice->update([
                 'payment_method_id' => $this->payment,
                 'planned_at' => Carbon::now()->addDay(),
                 'user_updated' => auth()->user()->id,
@@ -284,7 +314,7 @@ class WireCheckout extends Component
                 'cancelButtonText' => 'Fermer',
                 'onDismissed' => '',
                 'timerProgressBar' => true,
-            ]);
+            ]); */
             journalisation('Choix du moyen de paiement', $this->invoice);
             //redirect()->route('checkout.address');
         }
@@ -358,6 +388,7 @@ class WireCheckout extends Component
         $this->title = $this->valeur->title;
         $this->subtitle = $this->valeur->subtitle;
         $this->city = $this->valeur->city_id;
+        $this->country = $this->valeur->country_id;
         $this->location = $this->valeur->location;
     }
 
@@ -387,57 +418,61 @@ class WireCheckout extends Component
          $this->validate([
             'title' => 'required',
             'subtitle' => 'required',
-            'city' => 'required',
+            'country' => 'required',
         ]);
 
         if ($this->city == 270) {
             $this->validate([
-                /* 'title' => 'required',
-                'subtitle' => 'required',
-                'city' => 'required', */
                 'location' => 'required',
+            ]);
+        }
+        if ($this->country == 110) {
+            $this->validate([
+                'city' => 'required',
             ]);
         }
 
         if ($this->valeur) {
-
             if ($this->city == 270) {
-
                 $this->valeur->update([
                     'title' => $this->title,
                     'subtitle' => $this->subtitle,
                     'city_id' => $this->city,
+                    'country_id' => $this->country,
                     'location' => $this->location,
 
                     'user_updated' => auth()->user()->id,
                 ]);
-            } else{
+            }
+            else{
                 $this->valeur->update([
                     'title' => $this->title,
                     'subtitle' => $this->subtitle,
                     'city_id' => $this->city,
-
+                    'country_id' => $this->country,
                     'user_updated' => auth()->user()->id,
                 ]);
             }
 
             $message = 'Modification effectuée avec succès';
-        } else {
+        }
+        else {
             if ($this->city == 270) {
                 Address::create([
                     'title' => $this->title,
                     'subtitle' => $this->subtitle,
                     'city_id' => $this->city,
+                    'country_id' => $this->country,
                     'location' => $this->location,
                     'user_id' => auth()->user()->id,
-
-
                 ]);
-            }else{
+            }
+            else{
                 Address::create([
                     'title' => $this->title,
                     'subtitle' => $this->subtitle,
                     'city_id' => $this->city,
+                    'country_id' => $this->country,
                     'user_id' => auth()->user()->id,
                 ]);
             }
@@ -468,6 +503,7 @@ class WireCheckout extends Component
         $this->title = $this->valeur->title;
         $this->subtitle = $this->valeur->subtitle;
         $this->city = $this->valeur->city_id;
+        $this->country = $this->valeur->country_id;
         $this->location = $this->valeur->location;
     }
 

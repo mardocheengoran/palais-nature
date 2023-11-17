@@ -56,13 +56,13 @@
         {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
 
         <!-- Vendor Styles including: Font Icons, Plugins, etc.-->
-        <link rel="stylesheet" media="screen" href="vendor/simplebar/dist/simplebar.min.css"/>
-        <link rel="stylesheet" media="screen" href="vendor/tiny-slider/dist/tiny-slider.css"/>
-        <link rel="stylesheet" media="screen" href="vendor/drift-zoom/dist/drift-basic.min.css"/>
+        <link rel="stylesheet" media="screen" href="{{ asset('vendor/simplebar/dist/simplebar.min.css') }}"/>
+        <link rel="stylesheet" media="screen" href="{{ asset('vendor/tiny-slider/dist/tiny-slider.css') }}"/>
+        <link rel="stylesheet" media="screen" href="{{ asset('vendor/drift-zoom/dist/drift-basic.min.css') }}"/>
         <!-- Main Theme Styles + Bootstrap-->
-        <link rel="stylesheet" media="screen" href="css/theme.min.css">
+        <link rel="stylesheet" media="screen" href="{{ asset('css/theme.min.css') }}">
 
-        <link rel="stylesheet" href="{{ asset('css/style.css').'?t='.time() }}">
+        {{-- <link rel="stylesheet" href="{{ asset('css/style.css').'?t='.time() }}"> --}}
 
 
         <!-- Scripts -->
@@ -74,9 +74,11 @@
         <link rel="stylesheet" href="{{ asset('css/custom.css').'?t='.time() }}">
     </head>
     <body class="handheld-toolbar-enabled">
-
-        @yield('content')
+        <main class="page-wrapper">
+            @yield('content')
+        </main>
         @include('layouts.footer')
+
 
         {{-- <!-- Page JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
@@ -86,6 +88,7 @@
         <script src="https://preview.webpixels.io/purpose-website-ui-kit/assets/libs/isotope-layout/dist/isotope.pkgd.min.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script> --}}
+
 
         <!-- Toolbar for handheld devices (Default)-->
         <div class="handheld-toolbar">
@@ -112,13 +115,14 @@
             <i class="btn-scroll-top-icon ci-arrow-up"></i>
         </a>
         <!-- Vendor scrits: js libraries and plugins-->
-        <script src="vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="vendor/simplebar/dist/simplebar.min.js"></script>
-        <script src="vendor/tiny-slider/dist/min/tiny-slider.js"></script>
-        <script src="vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
-        <script src="vendor/drift-zoom/dist/Drift.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('vendor/simplebar/dist/simplebar.min.js') }}"></script>
+        <script src="{{ asset('vendor/tiny-slider/dist/min/tiny-slider.js') }}"></script>
+        <script src="{{ asset('vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
+        <script src="{{ asset('vendor/drift-zoom/dist/Drift.min.js') }}"></script>
         <!-- Main theme script-->
-        <script src="js/theme.min.js"></script>
+        <script src="{{ asset('js/theme.min.js') }}"></script>
 
 
 

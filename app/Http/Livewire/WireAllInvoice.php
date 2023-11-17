@@ -28,7 +28,7 @@ class WireAllInvoice extends Component
 
     public function mount()
     {
-        journalisation('profil index');
+        journalisation('all invoices');
         $this->setting = setting();
         $this->articles = all_articles();
         $this->categories = Parameter::where('type_parameter_id', 17)
