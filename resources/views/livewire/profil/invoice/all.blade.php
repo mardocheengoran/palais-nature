@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="container pb-5 mb-2 mb-md-3">
+    <div class="container pb-5 mb-2 mb-md-3 mt-3">
         <div class="row">
             @include('livewire.profil.account')
             <!-- Content  -->
