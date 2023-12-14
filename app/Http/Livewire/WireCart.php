@@ -154,6 +154,7 @@ class WireCart extends Component
         if (auth()->user()) {
             $user = user_cart(auth()->user()->id);
             Cookie::queue(Cookie::make('customer', auth()->user()->id, 60*60*24*365));
+            //dd($user->cart->toArray());
             if(count($user->cart)) {
                 $invoice = $user->cart->first();
                 invoice_MAJ($invoice);

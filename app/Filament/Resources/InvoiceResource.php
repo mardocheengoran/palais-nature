@@ -179,21 +179,21 @@ class InvoiceResource extends Resource
                     ->sortable()
                     ->money('xof'),
 
-                TextColumn::make('benefit')
+                /* TextColumn::make('benefit')
                 ->label('Commission')
                 ->wrap()
                 ->searchable()
                 ->money('xof')
-                ->sortable(),
+                ->sortable(), */
 
-                TextColumn::make('partfournisseur')
+                /* TextColumn::make('partfournisseur')
                     ->label('Part Fournisseur')
                     ->wrap()
                     ->sortable()
                     ->money('xof')
                     ->getStateUsing(function (Invoice $record): float {
                         return $record->price_ht - $record->benefit;
-                    }),
+                    }), */
 
                 TextColumn::make('customer.fullname')
                     ->label('Client')
@@ -257,7 +257,7 @@ class InvoiceResource extends Resource
                         //->whereIn('id', [48, 49, 50, 51, 52])
                     )
                     ->multiple()
-                    ->default([48, 49, 50, 51, 52, 269]),
+                    ->default([48, 49, 50, 51, 52, 269, 447, 269]),
 
                 Tables\Filters\SelectFilter::make('customer_id')
                     ->label('Client')

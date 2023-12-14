@@ -75,10 +75,10 @@ class Payment extends Model implements HasMedia
         parent::boot();
         self::creating(function ($model) {
             $model->code = IdGenerator::generate([
-                'table' => 'PAY',
+                'table' => 'payments',
                 'field' => 'code',
                 'length' => 8,
-                'prefix' => 'AR',
+                'prefix' => 'PY-',
                 'reset_on_prefix_change' => false,
             ]);
         });

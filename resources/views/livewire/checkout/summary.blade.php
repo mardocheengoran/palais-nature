@@ -107,7 +107,7 @@
                         </div>
                     @endisset
                 </div>
-                @if (($invoice->address_id or $invoice->relay_id) and $invoice->delivery_mode_id and $invoice->payment_method_id)
+                {{-- @if (($invoice->address_id or $invoice->relay_id) and $invoice->delivery_mode_id and $invoice->payment_method_id)
                     <div class="text-center card-footer">
                         <button type="button" wire:loading.class="text-white bg-dark" wire:loading.attr="disabled" wire:click='confirmer' class="btn btn-success btn-block">
                             <i class="icofont-paper-plane"></i>
@@ -117,7 +117,7 @@
                             </div>
                         </button>
                     </div>
-                @endif
+                @endif --}}
             </div>
         </div>
     </aside>

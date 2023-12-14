@@ -169,8 +169,8 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Invoice::class, 'customer_id')
         ->whereHas('states', function($q){
-            $q->where('parameters.id', 47)
-            ->whereNotNull('states.status');
+            $q->whereIn('parameters.id', [47, 446])
+            /* ->whereNotNull('states.status') */;
         })
         //->whereIn('state_id', [47])
         ->orderBy('created_at', 'desc');
@@ -182,13 +182,13 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Article::class, 'supplier_id');
     }
 
-    // Panier d'un user
+    // Commande validée
     public function invoices_check()
     {
         return $this->hasMany(Invoice::class, 'customer_id')
         //->whereIn('state_id', [48, 49, 50, 51])
         ->whereHas('states', function($q){
-            $q->whereIn('parameters.id', [48])
+            $q->whereIn('parameters.id', [48, 447])
             /* ->whereNotNull('states.status') */;
         })
         ->orderBy('created_at', 'desc');;

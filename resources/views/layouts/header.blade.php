@@ -1,3 +1,4 @@
+@include('layouts.admin-bar')
 <header class="shadow-sm">
     <!-- Topbar-->
     <div class="topbar topbar-dark p-0" style="background-color: #e2b900;">
@@ -62,6 +63,37 @@
                             </div>
                             <div class="navbar-tool-text ms-n3">{{ Auth::user()->fullname }}</div>
                         </a>
+
+                        <div class="navbar-tool dropdown ms-2">
+                            <a class="navbar-tool-icon-box border dropdown-toggle" href="dashboard-sales.html">
+                                @if(!empty(auth()->user()->getMedia('image')->first()))
+                                    <img width="32" src="{{ url(auth()->user()->getMedia('image')->first()->getUrl('thumb')) }}" alt="{{ auth()->user()->fullname }}">
+                                @else
+                                    <img width="32" src="{{ asset('img/user.png') }}" alt="{{ auth()->user()->fullname }}">
+                                @endif
+                            </a>
+                            <a class="navbar-tool-text ms-n1" href="{{ route('profil.index') }}">
+                                {{ Auth::user()->fullname }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <div style="min-width: 14rem;">
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('profil.index') }}">
+                                        <i class="ci-settings opacity-60 me-2"></i>Compte
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('invoice.all') }}">
+                                        <i class="ci-basket opacity-60 me-2"></i>Commandes
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                        <i class="ci-sign-out opacity-60 me-2"></i>
+                                        Décconexion
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     @endguest
 
                     <div class="navbar-tool dropdown ms-3">

@@ -22,17 +22,31 @@ class CountryResource extends Resource
     protected static ?string $model = Country::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-globe';
-    protected static bool $shouldRegisterNavigation = false;
+
+    protected static ?string $navigationGroup = 'Ecommerce';
+    protected static ?string $navigationLabel = 'Pays';
+
+    protected static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+
+    protected static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 10 ? 'warning' : 'primary';
+    }
+    //protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('alpha_2')
+                /*  TextInput::make('alpha_2')
                 ->maxLength(255),
 
-                TextInput::make('alpha_3')
-                ->maxLength(255),
+               TextInput::make('alpha_3')
+                ->maxLength(255), */
 
                 TextInput::make('title')
                 ->label('Nom')
@@ -41,6 +55,10 @@ class CountryResource extends Resource
                 TextInput::make('subtitle')
                 ->label('Nom en anglais')
                 ->maxLength(255),
+
+                TextInput::make('icon')
+                ->label('Coût de livraison')
+                ->maxLength(255),
             ]);
     }
 
@@ -48,24 +66,31 @@ class CountryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('alpha_2')
+                /* Tables\Columns\TextColumn::make('alpha_2')
                 ->searchable()
                 ->sortable(),
 
                 Tables\Columns\TextColumn::make('alpha_3')
                 ->searchable()
-                ->sortable(),
+                ->sortable(), */
 
                 Tables\Columns\TextColumn::make('title')
+                ->label('Nom')
                 ->searchable()
                 ->sortable(),
 
                 Tables\Columns\TextColumn::make('subtitle')
+                ->label('Nom en anglais')
                 ->searchable()
                 ->sortable(),
 
-                Tables\Columns\TextColumn::make('created_at')
-                ->since(),
+                Tables\Columns\TextColumn::make('icon')
+                ->label('Coût de livraison')
+                ->searchable()
+                ->sortable(),
+
+                /* Tables\Columns\TextColumn::make('created_at')
+                ->since(), */
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

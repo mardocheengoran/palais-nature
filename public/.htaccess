@@ -7,8 +7,8 @@
     RewriteCond %{SERVER_PORT} 80
     RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-    RewriteCond %{HTTP_HOST} ^bezo\.ci [NC]
-    RewriteRule ^(.*)$ https://www.bezo.ci/$1 [L,R=301]
+    RewriteCond %{HTTP_HOST} ^palaisdelanature\.com [NC]
+    RewriteRule ^(.*)$ https://www.palaisdelanature.com/$1 [L,R=301]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

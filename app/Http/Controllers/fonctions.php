@@ -354,13 +354,13 @@ function invoice_create()
 {
     $quantity = count(Cart::instance('shopping')->content());
     $price_ht = Cart::instance('shopping')->subtotal();
-    $price_delivery = coutLivraison($price_ht);
-    $price_final = $price_ht + $price_delivery;
+    //$price_delivery = coutLivraison($price_ht);
+    $price_final = $price_ht;
     $invoice = Invoice::create([
         'type' => 'product',
         'quantity' => $quantity,
         'price_ht' => $price_ht,
-        'price_delivery' => $price_delivery,
+        //'price_delivery' => $price_delivery,
         'price_final' => $price_final,
         'customer_id' => auth()->user()->id,
         'delivery_mode_id' => 175,
@@ -382,22 +382,23 @@ function invoice_MAJ($invoice)
 {
     $quantity = count(Cart::instance('shopping')->content());
     $price_ht = Cart::instance('shopping')->subtotal();
-    $price_delivery = coutLivraison($price_ht);
-    $price_final = $price_ht + $price_delivery;
+    //$price_delivery = coutLivraison($price_ht);
+    $price_final = $price_ht;
     // Si on déjà une commande en cours. On fait une mise à jour et on continue
     $invoice->update([
         'type' => 'product',
         'quantity' => $quantity,
         'price_ht' => $price_ht,
-        'price_delivery' => $price_delivery,
+        //'price_delivery' => $price_delivery,
         'price_final' => $price_final,
         'customer_id' => auth()->user()->id,
         'delivery_mode_id' => 175,
         'state_id' => 47,
+        'payment_method_id' => null,
         'ip' => request()->ip(),
         'user_updated' => auth()->user()->id
     ]);
-    $invoice->states()->sync(47, [
+    $invoice->states()->attach(47, [
         'user_created' => auth()->user()->id,
         'status' => 1,
     ]);

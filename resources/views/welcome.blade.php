@@ -78,12 +78,12 @@
         </div>
         <!-- Product carousel-->
         <div class="tns-carousel tns-controls-static tns-controls-outside mx-xl-n4 mx-n2 px-xl-4 px-0">
-            <div class="tns-carousel-inner row gx-xl-0 gx-3 mx-0" data-carousel-options="{&quot;items&quot;: 2, &quot;nav&quot;: true, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1,&quot;controls&quot;: false, &quot;gutter&quot;: 0},&quot;500&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3}, &quot;1100&quot;:{&quot;items&quot;:4}, &quot;1278&quot;:{&quot;controls&quot;: true, &quot;nav&quot;: false, &quot;gutter&quot;: 30}}}">
+            <div class="tns-carousel-inner row gx-xl-0 gx-3 mx-0" data-carousel-options="{&quot;items&quot;: 2, &quot;autoHeight&quot;: false, &quot;nav&quot;: true, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1,&quot;controls&quot;: false, &quot;gutter&quot;: 0},&quot;500&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3}, &quot;1100&quot;:{&quot;items&quot;:4}, &quot;1278&quot;:{&quot;controls&quot;: true, &quot;nav&quot;: false, &quot;gutter&quot;: 30}}}">
                 @foreach (specific_article($articles, 125)->where('active_size', 1)->take(4) as $article)
                     @if($article->getMedia('image')->first())
                         <!-- Product item-->
                         <div class="col py-3">
-                            <article class="card h-100 border-0 shadow">
+                            <article class="card product-card h-100 border-0 shadow">
                                 <div class="card-img-top position-relative overflow-hidden">
                                     <a class="d-block" href="{{ route('article.show', $article->slug) }}">
                                         <img src="{{ $article->getMedia('image')->first()->getUrl('normal') }}" alt="{{ $article->title }}">
@@ -119,6 +119,11 @@
                                             {{ devise($article->price_new) }}
                                         </h1>
                                     </div>
+                                </div>
+                                <div class="card-body{{--  card-body-hidden --}}">
+                                    <a href="{{ route('article.show', $article->slug) }}" class="mb-2 btn btn-primary btn-sm d-block w-100">
+                                        <i class="ci-cart fs-sm me-1"></i> Découvrez
+                                    </a>
                                 </div>
                             </article>
                         </div>

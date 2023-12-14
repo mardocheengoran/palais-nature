@@ -22,6 +22,7 @@ use App\Http\Livewire\WireArticleShow;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WelcomeController;
@@ -101,6 +102,9 @@ Route::middleware([
     Route::get('/resume', WireResume::class)->name('checkout.resume');
     Route::get('/congrat/{code}', WireCongrat::class)->name('checkout.congrat');
 
+    // Paiement pro
+    Route::match(['get','post'],'/return', [PaiementController::class, 'return'])->name('return');
+
     Route::get('routes', function () {
         $routeCollection = Route::getRoutes();
 
@@ -122,8 +126,15 @@ Route::middleware([
         echo "</table>";
     });
 
+    Route::get('testeur', [PaiementController::class, 'testeur'])->name('testeur');
+
     Route::get('/user/profile', WireProfile::class)->name('profile.show');
 
 });
 
+// Paiement pro
+Route::match(['get','post'],'/notify', [PaiementController::class, 'notify'])->name('notify');
+
+// Lire un article avec son slug
 Route::get('/{slug}', WireArticleShow::class)->name('article.show');
+

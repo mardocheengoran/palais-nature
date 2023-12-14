@@ -57,7 +57,7 @@ class Dashboard extends Page
                 //StatsOverviewWidget::class,
                 ListInvoice::class,
                 ListProduct::class,
-                InvoiceChart::class,
+                //InvoiceChart::class,
             ];
         }
         //return Filament::getWidgets();

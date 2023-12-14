@@ -10,6 +10,7 @@ use App\Models\Deal;
 use App\Models\Delivery;
 use App\Models\Invoice;
 use App\Models\Parameter;
+use App\Models\Payment;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -69,7 +70,7 @@ class WireCheckout extends Component
 
     public $relays;
 
-    public $payment = 53;
+    public $payment;
 
     public $selectedOtherCity;
 
@@ -267,6 +268,7 @@ class WireCheckout extends Component
             'payment' => 'required',
         ]);
         $user = user_cart(Cookie::get('customer'));
+        //dd($user->cart);
         if (count($user->cart) == 0) {
             toast('Panier vide', 'warning')->autoClose(15000);
             redirect()->route('checkout.cart');
@@ -274,49 +276,82 @@ class WireCheckout extends Component
             ini_set("soap.wsdl_cache_enabled", 0);
             $url="https://www.paiementpro.net/webservice/OnlineServicePayment_v2.php?wsdl";
             $client = new SoapClient($url,array('cache_wsdl' => WSDL_CACHE_NONE));
-            $array=array('merchantId'=>'PP-F105',
-                'countryCurrencyCode'=>'952',
-                'amount'=>$this->invoice->price_final,
-                'customerId' => $user->code,
-                'channel'=> $this->payment,
-                'customerEmail'=> $user->email,
-                'customerFirstName'=> $user->first_name,
-                'customerLastname'=> $user->name,
-                'customerPhoneNumber'=> $user->phone,
-                'referenceNumber'=> $this->invoice->code,
-                'notificationURL'=>'http://test.ci/notification/',
-                'returnURL'=>'http://test.ci/return/',
-                'description'=>'achat en ligne',
-                'returnContext'=>'test=2&ok=1&oui=2',
-            );
-            try{
-                $response=$client->initTransact($array);
-                if($response->Code==0){
-                    //var_dump($response->Sessionid);die();
-                    //header("Location:https://www.paiementpro.net/webservice/onlinepayment/processing_v2.php?sessionid=".$response->Sessionid);
-                    redirect("https://www.paiementpro.net/webservice/onlinepayment/processing_v2.php?sessionid=".$response->Sessionid);
+            $paiement = Parameter::find($this->payment);
+            //dd($this->payment);
+            if ($paiement) {
+                $array=array('merchantId' => 'PP-F1243',
+                    'countryCurrencyCode' => '952',
+                    'amount' =>$this->invoice->price_final,
+                    //'amount' => 100,
+                    'customerId' => $user->code,
+                    'channel' => $paiement->subtitle,
+                    'customerEmail' => $user->email,
+                    'customerFirstName' => $user->first_name,
+                    'customerLastname' => $user->name,
+                    'customerPhoneNumber' => $user->phone,
+                    'referenceNumber' => $this->invoice->code,
+                    'notificationURL' => route('notify'),
+                    'returnURL' => route('return'),
+                    'description' => 'achat en ligne',
+                    'returnContext' => 'test=2&ok=1&oui=2',
+                );
+                //dd($array);
+                try{
+                    $response=$client->initTransact($array);
+                    if($response->Code==0){
+                        //dd($response);
+                        //var_dump($response->Sessionid);die();
+                        //header("Location:https://www.paiementpro.net/webservice/onlinepayment/processing_v2.php?sessionid=".$response->Sessionid);
+                        //dd($this->payment);
+
+                        $this->invoice->update([
+                            'payment_method_id' => $paiement->id,
+                            'state_id' => 446,
+                            'user_updated' => auth()->user()->id,
+                        ]);
+                        //dd($this->invoice->toArray());
+                        $this->invoice->states()->updateExistingPivot(47, [
+                            'user_updated' => auth()->user()->id,
+                            'status' => null,
+                        ]);
+                        $this->invoice->states()->attach(446, [
+                            'user_created' => auth()->user()->id,
+                            'status' => 1,
+                        ]);
+
+                        $versement = Payment::create([
+                            'invoice_id' => $this->invoice->id,
+                            'means_payment_id' => $paiement->id,
+                            'moyen' => $paiement->subtitle,
+                            'price_final' => $this->invoice->price_final,
+                            'token' => $response->Sessionid,
+                            'status' => 0,
+                            'content' => json_encode($array),
+                        ]);
+                        //dd($versement);
+                        redirect("https://www.paiementpro.net/webservice/onlinepayment/processing_v2.php?sessionid=".$response->Sessionid);
+                    }
                 }
+                catch(Exception $e)
+                {
+                    echo $e->getMessage();
+                }
+                journalisation('Choix du moyen de paiement', $this->invoice);
+                //redirect()->route('checkout.address');
             }
-            catch(Exception $e)
-            {
-                echo $e->getMessage();
+            else {
+                $this->alert('warning', 'Moyen de paiement non valide', [
+                    'position' => 'top-end',
+                    'timer' => 3000,
+                    'toast' => true,
+                    'showCancelButton' => true,
+                    'cancelButtonText' => 'Fermer',
+                    'onDismissed' => '',
+                    'timerProgressBar' => true,
+                ]);
+                journalisation('Moyen de paiement non valide', $this->invoice);
+                redirect()->route('checkout.index');
             }
-            /* $this->invoice->update([
-                'payment_method_id' => $this->payment,
-                'planned_at' => Carbon::now()->addDay(),
-                'user_updated' => auth()->user()->id,
-            ]);
-            $this->alert('success', 'Choix du moyen de paiement', [
-                'position' => 'top-end',
-                'timer' => 3000,
-                'toast' => true,
-                'showCancelButton' => true,
-                'cancelButtonText' => 'Fermer',
-                'onDismissed' => '',
-                'timerProgressBar' => true,
-            ]); */
-            journalisation('Choix du moyen de paiement', $this->invoice);
-            //redirect()->route('checkout.address');
         }
     }
 

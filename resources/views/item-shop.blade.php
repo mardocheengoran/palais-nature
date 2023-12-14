@@ -6,13 +6,13 @@
                 -{{ number_format(100-($article->price_new*100)/$article->price_old, 1, ',', ' ') }}%
             </span>
         @endif
-        <a class="card-img-top d-block overflow-hidden" href="{{ route('article.show', $article->slug) }}">
+        <a class="overflow-hidden card-img-top d-block" href="{{ route('article.show', $article->slug) }}">
             @if($article->getMedia('image')->first())
                 <img src="{{ $article->getMedia('image')->first()->getUrl($thumb) }}" alt="{{ $article->title }}">
             @endif
         </a>
-        <div class="card-body py-2">
-            {{-- <a class="product-meta d-block fs-xs pb-1" href="#">Fruits and Vegetables</a> --}}
+        <div class="py-2 card-body">
+            {{-- <a class="pb-1 product-meta d-block fs-xs" href="#">Fruits and Vegetables</a> --}}
             <h3 class="product-title fs-sm text-truncate">
                 <a href="{{ route('article.show', $article->slug) }}">
                     {{ $article->title }}
@@ -31,12 +31,12 @@
             </a>
         </div> --}}
         <div class="card-body card-body-hidden">
-            <button class="btn btn-primary btn-sm d-block w-100 mb-2" type="button">
+            <a href="{{ route('article.show', $article->slug) }}" class="mb-2 btn btn-primary btn-sm d-block w-100">
                 <i class="ci-cart fs-sm me-1"></i> Découvrez
-            </button>
+            </a>
             {{-- <div class="text-center">
                 <a class="nav-link-style fs-ms" href="#quick-view" data-bs-toggle="modal">
-                    <i class="ci-eye align-middle me-1"></i>Quick view
+                    <i class="align-middle ci-eye me-1"></i>Quick view
                 </a>
             </div> --}}
         </div>
