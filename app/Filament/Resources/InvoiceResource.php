@@ -30,7 +30,7 @@ class InvoiceResource extends Resource
 
     protected static function getNavigationBadge(): ?string
     {
-        return static::getModel()::whereIn('state_id', [48, 48, 50, 51, 269, 447])
+        return static::getModel()::whereIn('state_id', [48, 49, 50, 51, 52, 269, 447])
         ->count();
     }
 

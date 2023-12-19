@@ -35,10 +35,9 @@
                 <a class="navbar-brand d-sm-none flex-shrink-0 me-2" href="{{ route('welcome') }}">
                     <img src="{{ asset('img/logo.png') }}" width="74" alt="{{ setting()->title }}" />
                 </a>
-                <div class="input-group d-none d-lg-flex mx-4">
-                    <input class="form-control rounded-end pe-5" type="text" placeholder="Rechercher un produit..." />
-                    <i class="ci-search position-absolute top-50 end-0 translate-middle-y text-muted fs-base me-3"></i>
-                </div>
+                {{-- <input class="form-control rounded-end pe-5" type="text" placeholder="Rechercher un produit..." />
+                <i class="ci-search position-absolute top-50 end-0 translate-middle-y text-muted fs-base me-3"></i> --}}
+                <livewire:search />
                 <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="navbar-toggler-icon"></span>
@@ -178,8 +177,9 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <!-- Search-->
                     <div class="input-group d-lg-none my-3">
-                        <i class="ci-search position-absolute top-50 start-0 translate-middle-y text-muted fs-base ms-3"></i>
-                        <input class="form-control rounded-start" type="text" placeholder="Rechercher un produit..." />
+                        {{-- <i class="ci-search position-absolute top-50 start-0 translate-middle-y text-muted fs-base ms-3"></i>
+                        <input class="form-control rounded-start" type="text" placeholder="Rechercher un produit..." /> --}}
+                        <livewire:search />
                     </div>
                     <!-- Primary menu-->
                     <ul class="navbar-nav mx-auto">
