@@ -57,13 +57,12 @@
                             <div class="navbar-tool-text ms-n3">Se connecter</div>
                         </a>
                     @else
-                        <a class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" href="{{ route('profil.index') }}">
+                        {{-- <a class="navbar-tool ms-1 ms-lg-0 me-n1 me-lg-2" href="{{ route('profil.index') }}">
                             <div class="navbar-tool-icon-box">
                                 <i class="navbar-tool-icon ci-user"></i>
                             </div>
                             <div class="navbar-tool-text ms-n3">{{ Auth::user()->fullname }}</div>
-                        </a>
-
+                        </a> --}}
                         <div class="navbar-tool dropdown ms-2">
                             <a class="navbar-tool-icon-box border dropdown-toggle" href="dashboard-sales.html">
                                 @if(!empty(auth()->user()->getMedia('image')->first()))

@@ -12,8 +12,13 @@
                     <h4 class="p-2"> Numero de commande : <span class="lg:text-xl font-semibold"> {{ $record->code }} </span></h4>
                     <h4 class="p-2"> Client :<span class="lg:text-xl font-semibold"> M./Mm  {{ $record->customer->fullname }} </span> </h4>
                     <h4 class="p-2"> Etat : <span class="lg:text-sm text-white py-1.5 px-3 rounded-lg font-semibold bg-{{ $record->state->color}}"> {{ $record->state->title }} </span> </h4>
-                    <h4 class="p-2"> Mode de payement : <span class="lg:text-xl font-semibold"> {{ $record->paymentMethod->title }} </span> </h4>
-                    <h4 class="p-2"> Mode de livraison :  <span class="lg:text-xl font-semibold"> {{ $record->deliveryMode->title }} </span></h4>
+                    {{-- @php(dd($record->states->toArray())) --}}
+                    @isset($record->deliveryMode->title)
+                        <h4 class="p-2"> Mode de payement : <span class="lg:text-xl font-semibold"> {{ $record->paymentMethod->title }} </span> </h4>
+                    @endisset
+                    @isset($record->deliveryMode->title)
+                        <h4 class="p-2"> Mode de livraison :  <span class="lg:text-xl font-semibold"> {{ $record->deliveryMode->title }} </span></h4>
+                    @endisset
                 </div>
                 <div class="text-sm lg:text-xl px-4">
                     <h4 class="p-2"> Nombre total d'articles :<span class="lg:text-xl font-semibold"> {{ $record->quantity }} </span> </h4>

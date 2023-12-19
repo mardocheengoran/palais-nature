@@ -62,6 +62,7 @@ class Parameter extends Model implements HasMedia
         'setting_id',
         'user_created',
         'user_updated',
+        'home',
     ];
 
     /**
@@ -178,6 +179,7 @@ class Parameter extends Model implements HasMedia
         ->whereStatus(1)
         ->wherePivot('type', 'category')
         ->withPivot('type', 'user_created', 'user_updated')
+        //->orderBy('rank', 'asc')
         ->withTimestamps();
     }
 

@@ -64,6 +64,8 @@ class WireCheckout extends Component
 
     public $location;
 
+    public $content;
+
     public $step = 1;
 
     public $payments;
@@ -202,10 +204,23 @@ class WireCheckout extends Component
         if (count($user->cart) == 0) {
             toast('Panier vide', 'warning')->autoClose(15000);
             redirect()->route('checkout.cart');
-        } else {
+        }
+        else {
             $address = Address::find($this->address);
             if ($address->country_id == 110) {
-                $amount = Parameter::find($address->city_id)->board;
+                $count_product_delivery_free = $this->invoice->articles->filter(function ($value, $key) {
+                    if ($value->delivery_free == 1) {
+                        return $value;
+                    }
+                });
+
+                if (isset($address->city->home) and $address->city->home == 1 and count($count_product_delivery_free) >= 1) {
+                    //dd($count_product_delivery_free);
+                    $amount = 0;
+                }
+                else {
+                    $amount = Parameter::find($address->city_id)->board;
+                }
             }
             else {
                 $amount = Country::find($address->country_id)->icon;
@@ -213,7 +228,7 @@ class WireCheckout extends Component
             $price_final = $this->invoice->price_ht + $amount;
             $this->invoice->update([
                 'address_id' => $this->address,
-                'planned_at' => Carbon::now()->addDay(),
+                //'planned_at' => Carbon::now()->addDay(),
                 'price_delivery' => $amount,
                 'price_final' => $price_final,
                 'user_updated' => auth()->user()->id,
@@ -453,6 +468,7 @@ class WireCheckout extends Component
          $this->validate([
             'title' => 'required',
             'subtitle' => 'required',
+            //'content' => 'required',
             'country' => 'required',
         ]);
 
@@ -475,6 +491,7 @@ class WireCheckout extends Component
                     'city_id' => $this->city,
                     'country_id' => $this->country,
                     'location' => $this->location,
+                    'content' => $this->content,
 
                     'user_updated' => auth()->user()->id,
                 ]);
@@ -483,6 +500,7 @@ class WireCheckout extends Component
                 $this->valeur->update([
                     'title' => $this->title,
                     'subtitle' => $this->subtitle,
+                    'content' => $this->content,
                     'city_id' => $this->city,
                     'country_id' => $this->country,
                     'user_updated' => auth()->user()->id,
@@ -499,6 +517,7 @@ class WireCheckout extends Component
                     'city_id' => $this->city,
                     'country_id' => $this->country,
                     'location' => $this->location,
+                    'content' => $this->content,
                     'user_id' => auth()->user()->id,
                 ]);
             }
@@ -506,6 +525,7 @@ class WireCheckout extends Component
                 Address::create([
                     'title' => $this->title,
                     'subtitle' => $this->subtitle,
+                    'content' => $this->content,
                     'city_id' => $this->city,
                     'country_id' => $this->country,
                     'user_id' => auth()->user()->id,

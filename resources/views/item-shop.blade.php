@@ -8,7 +8,8 @@
         @endif
         <a class="overflow-hidden card-img-top d-block" href="{{ route('article.show', $article->slug) }}">
             @if($article->getMedia('image')->first())
-                <img src="{{ $article->getMedia('image')->first()->getUrl($thumb) }}" alt="{{ $article->title }}">
+                {{-- <img src="{{ $article->getMedia('image')->first()->getUrl($thumb) }}" alt="{{ $article->title }}"> --}}
+                <img src="{{ $article->getMedia('image')->first()->getUrl() }}" alt="{{ $article->title }}">
             @endif
         </a>
         <div class="py-2 card-body">

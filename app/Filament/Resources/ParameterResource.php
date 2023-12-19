@@ -105,11 +105,37 @@ class ParameterResource extends Resource implements HasShieldPermissions
 
                     TextInput::make('icon')
                     ->label('Icône')
+                    ->hidden(in_array($type->id, [2]))
                     ->maxLength(255),
 
                     TextInput::make('subtitle')
                     ->label('Sous titre')
+                    ->hidden(in_array($type->id, [2]))
                     ->maxLength(255),
+
+                    TextInput::make('color')
+                    ->maxLength(255)
+                    ->visible(in_array($type->id, [22])),
+
+                    TextInput::make('board')
+                        ->label('Livraison')
+                        ->helperText('Insérez le cout de livraison')
+                        ->numeric()
+                        ->minValue(1)
+                        ->mask(fn (TextInput\Mask $mask) => $mask
+                            ->numeric()
+                            ->decimalPlaces(2) // Set the number of digits after the decimal point.
+                            ->decimalSeparator(',') // Add a separator for decimal numbers.
+                            ->minValue(1) // Set the minimum value that the number can be.
+                            ->thousandsSeparator(' '), // Add a separator for thousands.
+                        )
+                        ->maxLength(255)
+                        ->visible(in_array($type->id, [2])),
+
+                    Toggle::make('home')
+                        ->inline(false)
+                        ->label('Cette localité peut t-elle bénéficier d\'une livraison gratuite ?')
+                        ->visible(in_array($type->id, [2])),
                 ]),
 
                 Grid::make(3)->schema([
@@ -135,21 +161,6 @@ class ParameterResource extends Resource implements HasShieldPermissions
                     //->searchable()
                     ->visible(in_array($type->id, [17, 24]))
                     ->relationship('parent_filament', 'title', fn (Builder $query) => $query->whereType_parameter_id($type->id)),
-
-                    TextInput::make('board')
-                        ->label('Livraison')
-                        ->helperText('Insérez le cout de livraison')
-                        ->numeric()
-                        ->minValue(1)
-                        ->mask(fn (TextInput\Mask $mask) => $mask
-                            ->numeric()
-                            ->decimalPlaces(2) // Set the number of digits after the decimal point.
-                            ->decimalSeparator(',') // Add a separator for decimal numbers.
-                            ->minValue(1) // Set the minimum value that the number can be.
-                            ->thousandsSeparator(' '), // Add a separator for thousands.
-                        )
-                        ->maxLength(255)
-                        ->visible(in_array($type->id, [2])),
                 ]),
 
                 Section::make('Sous menu')->schema([
@@ -266,6 +277,7 @@ class ParameterResource extends Resource implements HasShieldPermissions
                         'resume' => 'resume',
                         'sheet' => 'sheet',
                         'quantity' => 'quantity',
+                        'delivery_free' => 'delivery_free',
                     ])
                     ->columns(4),
                 ])
@@ -352,7 +364,7 @@ class ParameterResource extends Resource implements HasShieldPermissions
                 ->toggledHiddenByDefault(),
 
                 ToggleColumn::make('home')
-                ->label('Accueil')
+                ->label('Livraison gratuite')
                 ->visible(in_array($type->id, [17])),
 
                 ToggleColumn::make('status')

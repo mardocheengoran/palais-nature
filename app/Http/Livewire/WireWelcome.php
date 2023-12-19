@@ -38,8 +38,13 @@ class WireWelcome extends Component
         ->get();
 
         $this->categoriesHome = Parameter::where('type_parameter_id', 17)
+        ->with([
+            'products' => function ($query) {
+                $query->orderByRaw('rank asc, created_at desc');
+            },
+        ])
         ->withCount('products')
-        ->orderByRaw('home desc, products_count desc, rank asc, created_at desc')
+        ->orderByRaw('rank asc, products_count desc, created_at desc')
         ->whereNull('parent_id')
         //->whereHome(1)
         //->limit($limit)

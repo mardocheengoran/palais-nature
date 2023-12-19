@@ -17,6 +17,7 @@ use Filament\Pages\Page;
 use Illuminate\Support\Facades\Hash;
 use JeffGreco13\FilamentBreezy\FilamentBreezy;
 use JeffGreco13\FilamentBreezy\Traits\HasBreezyTwoFactor;
+use Phpsa\FilamentPasswordReveal\Password;
 
 class MyProfile extends Page
 {
@@ -125,16 +126,16 @@ class MyProfile extends Page
     protected function getUpdatePasswordFormSchema(): array
     {
         return [
-            Forms\Components\TextInput::make("new_password")
+            Password::make("new_password")
                 ->label(__('filament-breezy::default.fields.new_password'))
                 ->password()
                 ->rules(app(FilamentBreezy::class)->getPasswordRules())
                 ->required(),
-            Forms\Components\TextInput::make("new_password_confirmation")
+            /* Forms\Components\TextInput::make("new_password_confirmation")
                 ->label(__('filament-breezy::default.fields.new_password_confirmation'))
                 ->password()
                 ->same("new_password")
-                ->required(),
+                ->required(), */
         ];
     }
 

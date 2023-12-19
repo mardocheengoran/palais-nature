@@ -93,6 +93,7 @@ class Article extends Model implements HasMedia
         'category2',
         'category3',
         'board',
+        'delivery_free',
     ];
 
     /**
@@ -150,6 +151,7 @@ class Article extends Model implements HasMedia
         });
         self::creating(function ($model) {
             $model->user_created = auth()->user()->id;
+            $model->status = 1;
             $model->setting_id = 1;
         });
     }

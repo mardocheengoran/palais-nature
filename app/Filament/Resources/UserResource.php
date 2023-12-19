@@ -88,7 +88,35 @@ class UserResource extends Resource implements HasShieldPermissions
                 ->visibleOn('create'),
 
                 Select::make('roles')
-                ->relationship('roles', 'name')
+                ->relationship('roles', 'name', function (Builder $query) {
+                    //$query->whereIn('name', auth()->user()->roles->pluck('name')->toArray());
+                    return $query->when(!auth()->user()->hasRole(['super_admin']), function($q){
+                        if (auth()->user()->hasRole(['admin'])) {
+                            $q->whereNotIn('name', ['super_admin', 'livreur', 'fournisseur']);
+                        }
+                        else {
+                            $q->whereIn('name', auth()->user()->roles->pluck('name')->toArray());
+                        }
+                    })
+                    /* ->when(auth()->user()->hasRole(['admin']), function($q){
+                        $q->whereNotIn('name', ['super_admin']);
+                    }) */;
+                })
+                ->options(
+                    Role::when(!auth()->user()->hasRole(['super_admin']), function($q){
+                        if (auth()->user()->hasRole(['admin'])) {
+                            $q->whereNotIn('name', ['super_admin', 'livreur', 'fournisseur']);
+                        }
+                        else {
+                            $q->whereIn('name', auth()->user()->roles->pluck('name')->toArray());
+                        }
+                    })
+                    /* ->when(auth()->user()->hasRole(['admin']), function($q){
+                        $q->whereNotIn('name', ['super_admin']);
+                    }) */
+                    ->get()
+                    ->pluck('name', 'id')
+                )
                 ->multiple()
                 ->required(),
 
@@ -100,7 +128,7 @@ class UserResource extends Resource implements HasShieldPermissions
                 ->label('Image')
                 ->collection('image'),
 
-                Select::make('city_id')
+                /* Select::make('city_id')
                 ->label('Zone')
                 ->required()
                 ->options(
@@ -112,7 +140,7 @@ class UserResource extends Resource implements HasShieldPermissions
 
                 TextInput::make('address')
                 ->label('Adresse')
-                ->maxLength(255),
+                ->maxLength(255), */
 
                 Grid::make(1)
                 ->schema([

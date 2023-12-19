@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "abanoubnassem/filament-phone-field": "^0.0.3",
         "akaunting/laravel-money": "^4.0",
         "alperenersoy/filament-export": "^0.2.9",
@@ -46,7 +46,8 @@
         "spatie/laravel-package-tools": "^1.9.2",
         "spatie/laravel-permission": "^5.5",
         "wire-elements/modal": "^1.0",
-        "yepsua/filament-themes": "^0.2.1"
+        "yepsua/filament-themes": "^0.2.1",
+        "phpsa/filament-password-reveal": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",

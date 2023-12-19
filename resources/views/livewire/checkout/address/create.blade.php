@@ -104,6 +104,19 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="content">
+                                Boite postale
+                            </label>
+                            <input wire:model='content' name="content" class="form-control" type="text" id="content">
+                            @error('content')
+                                <div class="text-danger">
+                                    <strong>V{{ $message }}</strong>
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

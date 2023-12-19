@@ -52,9 +52,9 @@ class CountryResource extends Resource
                 ->label('Nom')
                 ->maxLength(255),
 
-                TextInput::make('subtitle')
+                /* TextInput::make('subtitle')
                 ->label('Nom en anglais')
-                ->maxLength(255),
+                ->maxLength(255), */
 
                 TextInput::make('icon')
                 ->label('Coût de livraison')
@@ -79,10 +79,10 @@ class CountryResource extends Resource
                 ->searchable()
                 ->sortable(),
 
-                Tables\Columns\TextColumn::make('subtitle')
+                /* Tables\Columns\TextColumn::make('subtitle')
                 ->label('Nom en anglais')
                 ->searchable()
-                ->sortable(),
+                ->sortable(), */
 
                 Tables\Columns\TextColumn::make('icon')
                 ->label('Coût de livraison')

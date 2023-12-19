@@ -86,7 +86,7 @@
                             <article class="card product-card h-100 border-0 shadow">
                                 <div class="card-img-top position-relative overflow-hidden">
                                     <a class="d-block" href="{{ route('article.show', $article->slug) }}">
-                                        <img src="{{ $article->getMedia('image')->first()->getUrl('normal') }}" alt="{{ $article->title }}">
+                                        <img src="{{ $article->getMedia('image')->first()->getUrl() }}" alt="{{ $article->title }}">
                                     </a>
                                     {{-- <!-- Countdown timer-->
                                     <div class="badge bg-dark m-3 fs-sm position-absolute top-0 start-0 zindex-5">

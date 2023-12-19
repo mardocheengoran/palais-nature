@@ -30,10 +30,8 @@ class InvoiceResource extends Resource
 
     protected static function getNavigationBadge(): ?string
     {
-        return static::getModel()::when(auth()->user()->hasRole(['fournisseur']), function ($q) {
-            $q->whereSupplier_id(auth()->user()->id);
-        })
-            ->count();
+        return static::getModel()::whereIn('state_id', [48, 48, 50, 51, 269, 447])
+        ->count();
     }
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
@@ -118,11 +116,11 @@ class InvoiceResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('supplier.store')
+                /* TextColumn::make('supplier.store')
                     ->label('Fournisseur')
                     ->wrap()
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(), */
 
                 BadgeColumn::make('state.title')
                     ->label('Etat')
@@ -229,8 +227,9 @@ class InvoiceResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->since()
-                    ->label('Date')
+                    ->dateTime()
+                    ->tooltip(fn (Invoice $record): string => $record->created_at->diffForHumans())
+                    ->label('Passée le')
                     ->sortable(),
             ])
             ->filters([
@@ -257,7 +256,7 @@ class InvoiceResource extends Resource
                         //->whereIn('id', [48, 49, 50, 51, 52])
                     )
                     ->multiple()
-                    ->default([48, 49, 50, 51, 52, 269, 447, 269]),
+                    ->default([48, 49, 50, 51, 52, 269, 447]),
 
                 Tables\Filters\SelectFilter::make('customer_id')
                     ->label('Client')
@@ -321,6 +320,7 @@ class InvoiceResource extends Resource
                     // Validation de la commande
                     Action::make('state_id')
                         ->label('Valider la commande')
+                        ->tooltip('Accepter la commande : les produits commandés sont disponibles')
                         ->action(fn (Invoice $record) => $record->update([
                             'state_id' => 269,
                         ]))
@@ -338,7 +338,7 @@ class InvoiceResource extends Resource
                             //dd($record->title);
                             Mail::to(setting()->email)->send(new InvoiceStateMail($record, 'admin'));
                             Mail::to($record->customer->email)->send(new InvoiceStateMail($record, 'client'));
-                            Mail::to($record->supplier->email)->send(new InvoiceStateMail($record, 'fournisseur'));
+                            //Mail::to($record->supplier->email)->send(new InvoiceStateMail($record, 'fournisseur'));
                             Notification::make()
                                 ->title('commande validée avec succès')
                                 ->success()
@@ -364,7 +364,7 @@ class InvoiceResource extends Resource
                             //       //dd($record->title);
                             Mail::to(setting()->email)->send(new InvoiceStateMail($record, 'admin'));
                             Mail::to($record->customer->email)->send(new InvoiceStateMail($record, 'client'));
-                            Mail::to($record->supplier->email)->send(new InvoiceStateMail($record, 'fournisseur'));
+                            //Mail::to($record->supplier->email)->send(new InvoiceStateMail($record, 'fournisseur'));
 
                             if ($record->state_id == 51) {
                                 Notification::make()
@@ -379,7 +379,7 @@ class InvoiceResource extends Resource
                         })
                         ->color('success')
                         ->icon('heroicon-o-truck')
-                        ->visible(fn (Invoice $record) => $record->state_id == 50)
+                        ->visible(fn (Invoice $record) => $record->state_id == 269)
                         ->requiresConfirmation()
                         ->modalHeading('Livraison de la commande ')
                         ->modalSubheading(fn (Invoice $record) => 'La commande'.$record->code.' a-t-elle été livrée ?'),
@@ -397,7 +397,7 @@ class InvoiceResource extends Resource
                             //       //dd($record->title);
                             Mail::to(setting()->email)->send(new InvoiceStateMail($record, 'admin'));
                             Mail::to($record->customer->email)->send(new InvoiceStateMail($record, 'client'));
-                            Mail::to($record->supplier->email)->send(new InvoiceStateMail($record, 'fournisseur'));
+                            //Mail::to($record->supplier->email)->send(new InvoiceStateMail($record, 'fournisseur'));
 
                             if ($record->state_id == 52) {
                                 Notification::make()
@@ -417,7 +417,7 @@ class InvoiceResource extends Resource
                         ->modalHeading('Annulation de la commande')
                         ->modalSubheading(fn (Invoice $record) => 'Voulez-vous annuler la commande'.$record->code.' ?'),
 
-                    Action::make('state_affecte')
+                    /* Action::make('state_affecte')
                         ->label('Affectée la commande')
                         ->action(fn (Invoice $record) => $record->update([
                              'state_id' => 49,
@@ -491,7 +491,7 @@ class InvoiceResource extends Resource
                         ->modalHeading('Commande récupérée ?')
                         ->modalSubheading(fn (Invoice $record) => 'La commande '.$record->code.' a-t-elle été récupérée?'),
 
-                ]),
+ */                ]),
                 Action::make('imprimer')
                     ->label('')
                     ->color('danger')

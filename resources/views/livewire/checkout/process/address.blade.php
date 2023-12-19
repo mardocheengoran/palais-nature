@@ -73,12 +73,15 @@
     @else
         @if ($invoice->address_id)
             <div class="card-body">
-                {{ $invoice->address->title }} |
+                @if ($invoice->address->country_id)
+                    {{ $invoice->address->country->title }} /
+                @endif
                 @if (! empty( $invoice->address->city->title))
-                    {{ $invoice->address->city->title }}
-                @else
-                    {{ $invoice->address->location }}
-                @endif |
+                    {{ $invoice->address->city->title }} /
+                {{-- @else
+                    {{ $invoice->address->location }} / --}}
+                @endif
+                {{ $invoice->address->title }} /
                 <i class="text-muted" style="font-size: 12px;">{{ $invoice->address->subtitle }}</i>
 
                 @if ($invoice->planned_at)

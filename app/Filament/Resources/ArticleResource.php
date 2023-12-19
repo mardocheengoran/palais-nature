@@ -467,6 +467,11 @@ class ArticleResource extends Resource implements HasShieldPermissions
                                     ->maxLength(255)
                                     ->hidden(! in_array('price_old', $rubric->field)),
 
+                                Toggle::make('delivery_free')
+                                    ->label('Livraison gratuite')
+                                    ->helperText('S\'il est défini le cout de livraison est gratuit')
+                                    ->hidden(! in_array('delivery_free', $rubric->field)),
+
                                 Select::make('periodicite')
                                     ->label('Périodicité')
                                     ->options(Parameter::where('type_parameter_id', 5)->pluck('title', 'title'))
@@ -712,10 +717,15 @@ class ArticleResource extends Resource implements HasShieldPermissions
                 ->falseColor('danger'), */
 
                 ToggleColumn::make('active_size')
+                    ->sortable()
                     ->label('Gamme actif')
-                    ->toggleable()
-                    ->toggledHiddenByDefault()
-                    ->visible(auth()->user()->hasRole(['super_admin', 'admin']) and Cookie::get('rubric') == 125),
+                    /* ->toggleable()
+                    ->toggledHiddenByDefault() */
+                    /* ->visible((auth()->user()->hasRole(['super_admin', 'admin']) and Cookie::get('rubric') == 125)) */,
+
+                /* ToggleColumn::make('home')
+                    ->label('Gamme actif')
+                    ->visible(auth()->user()->hasRole(['super_admin', 'admin']) and Cookie::get('rubric') == 125), */
 
                 TextColumn::make('created_at')
                     ->label('Date')
@@ -728,6 +738,12 @@ class ArticleResource extends Resource implements HasShieldPermissions
                 Tables\Filters\TrashedFilter::make(),
                 SelectFilter::make('Rubrique')
                     ->relationship('rubric', 'title', fn (Builder $query) => $query->whereType_parameter_id(1)),
+
+                 SelectFilter::make('Catégories')
+                    ->relationship('categories', 'title', fn (Builder $query) => $query->where([
+                        'type_parameter_id' => 17,
+                    ]))
+                    ->multiple(),
 
                 DateRangeFilter::make('created_at')
                     ->label('Date d\'ajout')
@@ -773,8 +789,7 @@ class ArticleResource extends Resource implements HasShieldPermissions
             ])
             ->actions([
                 //Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()
-                    ->label(''),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->label(''),
             ])
