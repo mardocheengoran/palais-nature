@@ -29,7 +29,7 @@
                             <div class="col-8">
                                 <div class="media align-items-center">
                                     @if(!empty($article->getMedia('image')->first()))
-                                        <img style="width: 42px;" class="mr-2 float-start" src="{{ url($article->getMedia('image')->first()->getUrl('thumb')) }}" alt="{{ $item->name }}">
+                                        <img style="width: 42px;" class="mr-2 float-start" src="{{ url($article->getMedia('image')->first()->getUrl()) }}" alt="{{ $item->name }}">
                                     @endif
                                     <div class="media-body d-inline-block">
                                         <div class="text-limit lh-100">

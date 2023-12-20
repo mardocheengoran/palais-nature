@@ -19,7 +19,8 @@ class PaiementController extends Controller
         /* 1- Recuperation des paramètres postés sur l'url par CinetPay
          * https://docs.cinetpay.com/api/1.0-fr/checkout/notification#les-etapes-pour-configurer-lurl-de-notification
          * */
-        Storage::disk('public')->put("response-".date('Y-m-d-H-i-s').".json", json_encode($request->getContents()));
+        //dd(json_encode($request->all()));
+        Storage::disk('public')->put("response-".date('Y-m-d-H-i-s').".json", json_encode($request->all()));
         if (isset($request->sessionId))
         {
             if($request->responsecode == '0')
@@ -30,7 +31,7 @@ class PaiementController extends Controller
                 $paiement->update([
                     'created_at' => Carbon::now(),
                     'status' => 1,
-                    'content' => $request->getContents(),
+                    'content' => $request->all(),
                 ]);
                 $invoice->update([
                     'created_at' => Carbon::now(),
@@ -52,6 +53,7 @@ class PaiementController extends Controller
                     'created_at' => Carbon::now(),
                     'status' => 1,
                 ]);
+                journalisation('notify', $invoice);
                 echo 'Felicitation, votre paiement a été effectué avec succès';
             }
             else
@@ -74,7 +76,7 @@ class PaiementController extends Controller
             'status' => 0,
             //'content' => 'test',
         ]);
-        dd($versement);
+        //dd($versement);
     }
 
     //configuration de l'api de retour

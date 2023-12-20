@@ -168,11 +168,11 @@ class User extends Authenticatable implements HasMedia
     public function cart()
     {
         return $this->hasMany(Invoice::class, 'customer_id')
-        ->whereHas('states', function($q){
-            $q->whereIn('parameters.id', [47, 446])
-            /* ->whereNotNull('states.status') */;
-        })
-        //->whereIn('state_id', [47])
+       /*  ->whereHas('states', function($q){
+            $q->whereIn('parameters.id', [47])
+            ->whereNotNull('states.status');
+        }) */
+        ->whereIn('state_id', [47])
         ->orderBy('created_at', 'desc');
     }
 

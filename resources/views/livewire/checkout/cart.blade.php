@@ -61,7 +61,7 @@
                                         <td class="product-thumbnail">
                                             <a href="{{ route('article.show', $article->slug) }}">
                                                 @if(!empty($article->getMedia('image')->first()))
-                                                    <img width="80" src="{{ url($article->getMedia('image')->first()->getUrl('thumb')) }}" alt="{{ $item->name }}">
+                                                    <img width="80" src="{{ url($article->getMedia('image')->first()->getUrl()) }}" alt="{{ $item->name }}">
                                                 @endif
                                             </a>
                                         </td>

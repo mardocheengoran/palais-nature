@@ -210,6 +210,14 @@ class InvoiceResource extends Resource
                     ->searchable()
                     ->sortable(),
 
+                TextColumn::make('paymentMethod.title')
+                    ->label('Moyen de paiement')
+                    ->wrap()
+                    ->toggleable()
+                    ->toggledHiddenByDefault()
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('address.title')
                     ->label('Adresse de livraison')
                     ->wrap()

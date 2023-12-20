@@ -3,38 +3,32 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 .title{
 	text-align:center;
     color: #e36416 ;
 }
 
-
-
 td {
-
-
-   border-top: 1px solid gray;
-
-  font-size: 15px;
-
+    border-top: 1px solid gray;
+    font-size: 15px;
 }
 
 table {
-	 width: 100%;
+	width: 100%;
  	margin-left:20px;
     margin-right:20px;
-  border-collapse: collapse;
-
+    border-collapse: collapse;
 }
-
-
 
 .signature{
 	font-size : 18px;
     font-weight : bold;
     color: #e36416 ;
 }
-
 
 .column1 {
   float: left;
@@ -71,7 +65,7 @@ text-align: right;
     <table style="width: 100%; ">
         <tr class="header">
           <td class="">
-            <img src="{{ public_path('img/seller.png') }}" width="155" style="border: 0; max-width: 100%; line-height: 100%; " />
+            <img src="{{ public_path('img/logo.png') }}" width="155" style="border: 0; max-width: 100%; line-height: 100%; " />
           </td>
           <td style=" text-align:right;">
             {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::size(90)->generate("http://127.0.0.1:8000/generate-facture/IN-00001")) !!} "> --}}
@@ -102,7 +96,6 @@ text-align: right;
 
             <tr>
                 <td>Email :</td>
-
             </tr>
 
             <tr>
@@ -117,9 +110,9 @@ text-align: right;
                 <td>N° téléphone :</td>
             </tr>
 
-            <tr>
+            {{-- <tr>
                 <td> Date et heure de livraison :</td>
-            </tr>
+            </tr> --}}
 
             <tr>
                 <td>Date de commande :</td>
@@ -139,7 +132,23 @@ text-align: right;
             </tr>
 
             <tr>
-            <td>{{$record->address->title}}</td>
+            <td>
+                @isset($record->address->title)
+                    <span>
+                        {{ $record->address->title }} |
+                        @if ($record->address->city_id == 270)
+                            {{ $record->address->location }}
+                        @else
+                            @if ($record->address->country_id == 110)
+                                {{ isset($record->address->city->title) ? $record->address->city->title : '' }} |
+                            @else
+                                {{ isset($record->address->country->title) ? $record->address->country->title : '' }} |
+                            @endif
+                        @endif
+                        <i class="text-muted">({{ $record->address->subtitle }})</i>
+                    </span>
+                @endisset
+            </td>
             </tr>
 
             <tr>
@@ -147,19 +156,21 @@ text-align: right;
             </tr>
 
             <tr>
-            <td>{{$record->customer->phone}}</td>
+            <td>
+                @isset($record->address->title)
+                    ({{ $record->address->subtitle }})
+                @endisset
+                {{-- {{$record->customer->phone}} --}}
+            </td>
             </tr>
 
             <tr>
-            <td> {{$record->planned_at->isoFormat('dddd D MMMM YYYY')}} </td>
+            {{-- <td> {{$record->planned_at->isoFormat('dddd D MMMM YYYY')}} </td> --}}
             </tr>
 
             <tr>
                 <td>{{$record->created_at->isoFormat('dddd D MMMM YYYY')}}</td>
             </tr>
-
-
-
 
         </table>
   </div>
@@ -247,8 +258,10 @@ text-align: right;
         </tr>
     </tbody>
     </table>
-    <p>(+225) 20 00 05 71 / 09 09 65 51 / 75 03 42 03 / 02 71 71 86</p>
-    <p>info@bezo.ci</p>
+    <p>
+        (+225) 0595742026 | (+225) 0506078925
+    </p>
+    {{-- <p>info@bezo.ci</p> --}}
     <span><p>
 
 NB : Cher client(e), nous vous prions de bien vérifier la qualité et la Quantité des produits de votre commande à la livraison.

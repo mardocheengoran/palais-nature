@@ -719,8 +719,8 @@ class ArticleResource extends Resource implements HasShieldPermissions
                 ToggleColumn::make('active_size')
                     ->sortable()
                     ->label('Gamme actif')
-                    /* ->toggleable()
-                    ->toggledHiddenByDefault() */
+                    ->toggleable()
+                    ->toggledHiddenByDefault()
                     /* ->visible((auth()->user()->hasRole(['super_admin', 'admin']) and Cookie::get('rubric') == 125)) */,
 
                 /* ToggleColumn::make('home')

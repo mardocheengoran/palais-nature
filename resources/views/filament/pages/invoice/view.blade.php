@@ -13,11 +13,29 @@
                     <h4 class="p-2"> Client :<span class="lg:text-xl font-semibold"> M./Mm  {{ $record->customer->fullname }} </span> </h4>
                     <h4 class="p-2"> Etat : <span class="lg:text-sm text-white py-1.5 px-3 rounded-lg font-semibold bg-{{ $record->state->color}}"> {{ $record->state->title }} </span> </h4>
                     {{-- @php(dd($record->states->toArray())) --}}
-                    @isset($record->deliveryMode->title)
+                    @isset($record->paymentMethod->title)
                         <h4 class="p-2"> Mode de payement : <span class="lg:text-xl font-semibold"> {{ $record->paymentMethod->title }} </span> </h4>
                     @endisset
                     @isset($record->deliveryMode->title)
                         <h4 class="p-2"> Mode de livraison :  <span class="lg:text-xl font-semibold"> {{ $record->deliveryMode->title }} </span></h4>
+                    @endisset
+                    @isset($record->address->title)
+                        <h4 class="p-2">
+                            Adresse de livraison :
+                            <span class="lg:text-xl font-semibold">
+                                {{ $record->address->title }} |
+                                @if ($record->address->city_id == 270)
+                                    {{ $record->address->location }}
+                                @else
+                                    @if ($record->address->country_id == 110)
+                                        {{ isset($record->address->city->title) ? $record->address->city->title : '' }} |
+                                    @else
+                                        {{ isset($record->address->country->title) ? $record->address->country->title : '' }} |
+                                    @endif
+                                @endif
+                                <i class="text-muted">({{ $record->address->subtitle }})</i>
+                            </span>
+                        </h4>
                     @endisset
                 </div>
                 <div class="text-sm lg:text-xl px-4">
