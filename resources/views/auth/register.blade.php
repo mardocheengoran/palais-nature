@@ -145,7 +145,7 @@
                                             Quel est votre type de véhicule
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <div class="input-group input-group-merge mt-4">
+                                        <div class="mt-4 input-group input-group-merge">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <i class="icofont-truck"></i>
@@ -354,7 +354,7 @@
             </div>
         </div>
     </div>
-    <div class="modal modal-fluid fade" id="modal_1" tabindex="-1" role="dialog" aria-labelledby="modal_1" aria-hidden="true">
+    {{-- <div class="modal modal-fluid fade" id="modal_1" tabindex="-1" role="dialog" aria-labelledby="modal_1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -375,7 +375,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     @push('script')
         <script src="https://cdn.qenium.com/asset/libs/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
     @endpush

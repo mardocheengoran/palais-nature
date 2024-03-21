@@ -5,9 +5,9 @@
     @include('signal')
 
     <!-- Custom page title-->
-    <section class="page-title-overlap bg-primary pt-4">
-        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
-            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+    <section class="pt-4 page-title-overlap bg-primary">
+        <div class="container py-2 d-lg-flex justify-content-between py-lg-3">
+            <div class="mb-3 order-lg-2 mb-lg-0 pt-lg-2">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
                         <li class="breadcrumb-item">
@@ -25,15 +25,15 @@
                     </ol>
                 </nav>
             </div>
-            <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
-                <h1 class="h3 text-light mb-2">
+            <div class="text-center order-lg-1 pe-lg-4 text-lg-start">
+                <h1 class="mb-2 h3 text-light">
                     {{ $article->title }}
                 </h1>
             </div>
         </div>
     </section>
     <section class="container">
-        <div class="bg-light shadow-lg p-3 rounded-3">
+        <div class="p-3 shadow-lg bg-light rounded-3">
             <div class="row">
                 <!-- Product gallery-->
                 <div class="col-lg-5 pe-lg-0">
@@ -59,8 +59,8 @@
                     </div>
                 </div>
                 <!-- Product details-->
-                <div class="col-lg-7 pt-4 pt-lg-0">
-                    <div class="product-details ms-auto pb-3">
+                <div class="pt-4 col-lg-7 pt-lg-0">
+                    <div class="pb-3 product-details ms-auto">
                         <div class="mb-2 text-end">
 
                             <button type="button" data-bs-toggle="tooltip" aria-label="Ajouter à la liste d'envie" data-bs-original-title="Ajouter à la liste d'envie" wire:loading.class="text-warning"  wire:loading.attr="disabled" wire:click="wishlist" class="btn-wishlist me-0 me-lg-n3" href="#">
@@ -71,7 +71,7 @@
                             </button>
                         </div>
                         <div class="mb-3">
-                            <span class="h3 font-weight-normal text-primary mr-1">
+                            <span class="mr-1 h3 font-weight-normal text-primary">
                                 {{ devise($article->price_new) }}
                             </span>
                             @if ($article->price_old)
@@ -79,13 +79,13 @@
                                     {{ devise($article->price_old) }}
                                 </del>
 
-                                <span class="badge bg-primary badge-shadow align-middle mt-n2">
+                                <span class="align-middle badge bg-primary badge-shadow mt-n2">
                                     @php($solde = 100-($article->price_new*100)/$article->price_old)
                                     {{ '-'.number_format($solde, 2, '.', ' ').'%' }}
                                 </span>
                             @endif
                         </div>
-                        <form class="d-flex align-items-center pt-2 pb-4">
+                        <form class="pt-2 pb-4 d-flex align-items-center">
                             <select class="form-select me-3" style="width: 5rem;" name="quantity" id="quantity" wire:model="quantity">
                                 @for($i = 1; $i <= 10; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
@@ -101,10 +101,10 @@
                         </form>
                         {!! $article->content !!}
                         <!-- Sharing-->
-                        {{-- <label class="form-label d-inline-block align-middle my-2 me-3">Share:</label>
-                        <a class="btn-share btn-twitter me-2 my-2" href="#"><i class="ci-twitter"></i>Twitter</a>
-                        <a class="btn-share btn-instagram me-2 my-2" href="#"><i class="ci-instagram"></i>Instagram</a>
-                        <a class="btn-share btn-facebook my-2" href="#"><i class="ci-facebook"></i>Facebook</a> --}}
+                        {{-- <label class="my-2 align-middle form-label d-inline-block me-3">Share:</label>
+                        <a class="my-2 btn-share btn-twitter me-2" href="#"><i class="ci-twitter"></i>Twitter</a>
+                        <a class="my-2 btn-share btn-instagram me-2" href="#"><i class="ci-instagram"></i>Instagram</a>
+                        <a class="my-2 btn-share btn-facebook" href="#"><i class="ci-facebook"></i>Facebook</a> --}}
                     </div>
                 </div>
             </div>
@@ -112,9 +112,9 @@
     </section>
 
 
-    <section class="container pt-lg-2 pb-5 mb-md-3" wire:ignore>
+    <section class="container pb-5 pt-lg-2 mb-md-3" wire:ignore>
         <div class="section-header">
-            <h2 class="h3 text-center pb-4">
+            <h2 class="pb-4 text-center h3">
                 Produits similaires
             </h2>
         </div>

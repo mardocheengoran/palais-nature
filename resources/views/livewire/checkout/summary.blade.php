@@ -106,6 +106,24 @@
                             </div>
                         </div>
                     @endisset
+                    @isset ($invoice->content)
+                        <div class="py-3 row border-top">
+
+                            <div class="text-right col-5">
+                                <span class="">
+                                    Groupe sanguin
+                                </span>
+                            </div>
+                            <div class="col-7 text-end">
+                                <span class="fw-bolder badge bg-warning">
+                                    {{ $invoice->content }}
+                                </span>
+                                <a  href="{{ route('checkout.cart') }}" class="text-warning">
+                                    <i class="icofont-edit"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endisset
                 </div>
                 {{-- @if (($invoice->address_id or $invoice->relay_id) and $invoice->delivery_mode_id and $invoice->payment_method_id)
                     <div class="text-center card-footer">

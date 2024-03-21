@@ -152,6 +152,13 @@ class InvoiceResource extends Resource
                     ->searchable()
                     ->sortable(),
 
+                BadgeColumn::make('content')
+                    ->label('Sanguin')
+                    ->wrap()
+                    ->colors(['warning'])
+                    ->searchable()
+                    ->sortable(),
+
                 BadgeColumn::make('price_ht')
                     ->colors(['success'])
                     ->icons(['heroicon-o-currency-dollar'])
@@ -162,7 +169,7 @@ class InvoiceResource extends Resource
                     ->money('xof'),
 
                 TextColumn::make('price_delivery')
-                    ->label('Coût de livraison')
+                    ->label('Coût livraison')
                     ->wrap()
                     ->searchable()
                     ->money('xof')
@@ -171,7 +178,7 @@ class InvoiceResource extends Resource
                 BadgeColumn::make('price_final')
                     ->colors(['success'])
                     ->icons(['heroicon-o-currency-dollar'])
-                    ->label('Montant total')
+                    ->label('Total')
                     ->wrap()
                     ->searchable()
                     ->sortable()

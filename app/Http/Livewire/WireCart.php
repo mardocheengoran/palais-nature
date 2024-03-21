@@ -24,6 +24,7 @@ class WireCart extends Component
     public $valeur;
     public $name, $rowId;
     public $setting, $articles, $categories;
+    public $content;
 
     public function mount()
     {
@@ -152,6 +153,9 @@ class WireCart extends Component
     public function next()
     {
         if (auth()->user()) {
+            $this->validate([
+                'content' => 'required',
+            ]);
             $user = user_cart(auth()->user()->id);
             Cookie::queue(Cookie::make('customer', auth()->user()->id, 60*60*24*365));
             //dd($user->cart->toArray());
@@ -162,6 +166,9 @@ class WireCart extends Component
             else {
                 $invoice = invoice_create();
             }
+            $invoice->update([
+                'content' => $this->content,
+            ]);
             redirect()->route('checkout.index');
         }
         else {

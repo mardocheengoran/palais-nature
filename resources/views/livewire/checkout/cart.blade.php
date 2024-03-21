@@ -3,9 +3,9 @@
     @include('layouts.header')
     @include('livewire.checkout.clear')
 
-    <div class="page-title-overlap bg-primary pt-4">
-        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
-            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+    <div class="pt-4 page-title-overlap bg-primary">
+        <div class="container py-2 d-lg-flex justify-content-between py-lg-3">
+            <div class="mb-3 order-lg-2 mb-lg-0 pt-lg-2">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
                         <li class="breadcrumb-item">
@@ -17,8 +17,8 @@
                     </ol>
                 </nav>
             </div>
-            <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
-                <h1 class="h3 text-light mb-0">
+            <div class="text-center order-lg-1 pe-lg-4 text-lg-start">
+                <h1 class="mb-0 h3 text-light">
                     Votre panier ({{ Cart::instance('shopping')->count() }})
                 </h1>
             </div>
@@ -189,7 +189,25 @@
 
                             <div class="text-center border-top">
                                 @auth
-                                    <button wire:loading.class="bg-dark" wire:loading.attr="disabled" wire:click='next' class="mt-4 btn btn-warning btn-shadow w-100 text-uppercase">
+                                    <div class="mt-4">
+                                        <select name="content" id="content" wire:model="content" class="form-control" required>
+                                            <option value="">Choisissez votre groupe sanguin *</option>
+                                            <option value="Groupe A+">Groupe A+</option>
+                                            <option value="Groupe A-">Groupe A-</option>
+                                            <option value="Groupe B+">Groupe B+</option>
+                                            <option value="Groupe B-">Groupe B-</option>
+                                            <option value="Groupe AB+">Groupe AB+</option>
+                                            <option value="Groupe AB-">Groupe AB-</option>
+                                            <option value="Groupe O+">Groupe O+</option>
+                                            <option value="Groupe O-">Groupe O-</option>
+                                        </select>
+                                        @error('content')
+                                            <div class="mb-3 text-danger">
+                                                <strong>{{ $message }}</strong>
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <button wire:loading.class="bg-dark" wire:loading.attr="disabled" wire:click='next' class="mt-2 btn btn-warning btn-shadow w-100 text-uppercase">
                                         <i class="mr-2 czi-card font-size-lg"></i> Valider ma commander
                                         <div wire:loading wire:target="next">
                                             <span class="spinner-border spinner-border-sm"></span>
@@ -252,7 +270,7 @@
             <div class="p-2 pt-4 m-auto text-center text-white border bg-warning" style="border-radius: 100%; border: solid 3px; width: 150px; height:140px;">
                 <i class="icofont-shopping-cart fa-5x"></i>
             </div>
-            <h3 class="text-center  fw-bold">Panier vide</h3>
+            <h3 class="text-center fw-bold">Panier vide</h3>
             <p class="text-center">
                 <a class="pl-2 btn btn-warning btn-sm" href="{{ route('welcome') }}">
                     <i class="mr-2 czi-arrow-left"></i>Poursuivre vos achats
