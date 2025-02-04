@@ -40,6 +40,8 @@ class Payment extends Model implements HasMedia
         'setting_id',
         'user_created',
         'user_updated',
+        'before_payment',
+        'after_payment',
     ];
 
     /**
@@ -59,6 +61,8 @@ class Payment extends Model implements HasMedia
         'setting_id' => 'integer',
         'user_created' => 'integer',
         'user_updated' => 'integer',
+        'before_payment' => 'array',
+        'after_payment' => 'array',
     ];
 
     public function sluggable():array

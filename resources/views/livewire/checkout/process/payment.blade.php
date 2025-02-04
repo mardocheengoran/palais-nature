@@ -83,9 +83,9 @@
                                 <div class="custom-control custom-radio">
                                     <input wire:model='payment' value="{{ $item->id }}" type="radio" class="custom-control-input" id="payment-{{ $item->id }}" />
                                     <label class="custom-control-label text-dark font-weight-bold" for="payment-{{ $item->id }}">
-                                        <p class="mt-3 mb-0 text-sm text-muted d-flex">
+                                        <p class="mt-3 mb-0 text-sm text-muted">
                                             @if(!empty($item->getMedia('image')->first()))
-                                                <img class="mr-2 float-start" width="80" src="{{ url($item->getMedia('image')->first()->getUrl('thumb')) }}" alt="{{ $item->title }}">
+                                                <img class="mr-2 float-start" src="{{ url($item->getMedia('image')->first()->getUrl('thumb')) }}" alt="{{ $item->title }}">
                                             @endif
                                             <span class="d-inline-block ms-4">
                                                 {{ $item->title }}

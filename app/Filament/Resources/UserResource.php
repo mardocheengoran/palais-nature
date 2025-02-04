@@ -83,9 +83,9 @@ class UserResource extends Resource implements HasShieldPermissions
                 TextInput::make('password')
                 ->password()
                 ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                ->required()
+                /* ->required()
                 ->hiddenOn('edit')
-                ->visibleOn('create'),
+                ->visibleOn('create') */,
 
                 Select::make('roles')
                 ->relationship('roles', 'name', function (Builder $query) {

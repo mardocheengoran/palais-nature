@@ -22,6 +22,7 @@ use App\Http\Livewire\WireArticleShow;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\EcommercePaimentController;
 use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\SearchController;
@@ -134,6 +135,11 @@ Route::middleware([
 
 // Paiement pro
 Route::match(['get','post'],'/notify', [PaiementController::class, 'notify'])->name('notify');
+
+// Paiement boutique avec CinetPay
+Route::match(['get','post'],'/notify-boutique', [EcommercePaimentController::class, 'notify_url'])->name('notify_boutique');
+Route::match(['get','post'],'/return-boutique/{code}', [EcommercePaimentController::class, 'return_url'])->name('return_boutique');
+
 
 // Lire un article avec son slug
 Route::get('/{slug}', WireArticleShow::class)->name('article.show');

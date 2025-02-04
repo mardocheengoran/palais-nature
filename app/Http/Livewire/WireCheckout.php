@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Mail;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use RealRashid\SweetAlert\Facades\Alert;
 use SoapClient;
 
 class WireCheckout extends Component
@@ -372,6 +373,144 @@ class WireCheckout extends Component
                 ]);
                 journalisation('Moyen de paiement non valide', $this->invoice);
                 redirect()->route('checkout.index');
+            }
+        }
+    }
+
+    // Choix du mode de paiement CinetPay
+    public function paymentCinetPay()
+    {
+        $this->validate([
+            'payment' => 'required',
+        ]);
+        $user = user_cart(Cookie::get('customer'));
+        //dd($user->cart);
+        if (count($user->cart) == 0) {
+            toast('Panier vide', 'warning')->autoClose(15000);
+            redirect()->route('checkout.cart');
+        }
+        else {
+            $paiement = Parameter::find($this->payment);
+            //dd($paiement, $this->payment);
+            if ($paiement and $this->payment == 452) {
+                if (auth()->user()->id == 1) {
+                    $price = 100;
+                }
+                else {
+                    $price = $this->invoice->price_final;
+                }
+                $transaction_id = $user->code.'.'.date("YmdHis");// Generer votre identifiant de transaction
+                $cinetpay_data = [
+                    "amount"=> $price,
+                    "currency"=> 'XOF',
+                    "apikey"=> env("APIKEY"),
+                    "site_id"=> env('BOUTIQUE_SITE_ID'),
+                    "transaction_id"=> $transaction_id,
+                    "description"=> "Paiement de la commande N°".$this->invoice->code,
+                    "return_url"=> route('return_boutique', $this->invoice->code),
+                    "notify_url"=> route('notify_boutique'),
+                    "metadata"=> auth()->user()->code,
+
+                    // client
+                    'customer_id' => auth()->user()->code,
+                    'customer_surname'=> $user->first_name,
+                    'customer_name'=> $user->name,
+                    'customer_email'=> auth()->user()->email,
+                    'customer_phone_number'=> auth()->user()->phone,
+                    'customer_address'=> (isset($user->section) ? $user->section : 'Abidjan'),
+                    'customer_city'=> (isset($user->region->title) ? $user->region->title : 'Abidjan'),
+                    'customer_country'=> 'CI' ,
+                    'customer_state'=> 'CI',
+                    'customer_zip_code'=> '00225',
+
+                    'channels' => 'ALL',
+                    'mode' => 'PRODUCTION'
+                ];
+                //dd($cinetpay_data);
+                //Sequence d'initialisation du lien de paiement
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => 'https://api-checkout.cinetpay.com/v2/payment',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 45,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => json_encode($cinetpay_data),
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_HTTPHEADER => array(
+                        "content-type:application/json"
+                    ),
+                ));
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+                curl_close($curl);
+
+                //On recupère la réponse de CinetPay
+                $response_body = json_decode($response,true);
+                //dd($response_body);
+                if($response_body['code'] == '201')
+                {
+                    $payment_link = $response_body["data"]["payment_url"]; // Recuperation de l'url de paiement
+                    $paiementArray = ($response_body);
+                    $this->invoice->update([
+                        'payment_method_id' => $paiement->id,
+                        'state_id' => 446,
+                        'user_updated' => auth()->user()->id,
+                    ]);
+                    $this->invoice->states()->attach(446, [
+                        'user_created' => auth()->user()->id,
+                        'status' => 1,
+                    ]);
+                    $payment = Payment::create([
+                        'user_created' => auth()->user()->id,
+                        'token' => $transaction_id,
+                        'price_ht' => $price,
+                        'price_final' => $price,
+                        'before_payment' => $paiementArray,
+                        'user_id' => auth()->user()->id,
+                        'invoice_id' => $this->invoice->id,
+                        'means_payment_id' => $paiement->id,
+                    ]);
+                    //Ensuite redirection vers la page de paiement
+                    return redirect($payment_link);
+                }
+                else
+                {
+                    //return back()->with('info', 'Une erreur est survenue.  Description : '. $response_body["description"].'  '.$response_body["code"]);
+                    Alert::success('Une erreur est survenue.  Description : '. $response_body["description"], 'success')->autoClose(20000);
+                    //return redirect()->route('filament.admin.pages.dashboard');
+
+                    /* $this->alert('warning', 'Une erreur est survenue.  Description : '. $response_body["description"], [
+                        'position' => 'top-end',
+                        'timer' => 3000,
+                        'toast' => true,
+                        'showCancelButton' => true,
+                        'cancelButtonText' => 'Fermer',
+                        'onDismissed' => '',
+                        'timerProgressBar' => true,
+                    ]);
+                    return redirect()->route('filament.admin.pages.dashboard'); */
+                }
+            }
+            else{
+                $this->invoice->update([
+                    'payment_method_id' => $this->payment,
+                    'planned_at' => Carbon::now()->addDay(),
+                    'user_updated' => auth()->user()->id,
+                ]);
+                $this->alert('success', 'Choix du moyen de paiement', [
+                    'position' => 'top-end',
+                    'timer' => 3000,
+                    'toast' => true,
+                    'showCancelButton' => true,
+                    'cancelButtonText' => 'Fermer',
+                    'onDismissed' => '',
+                    'timerProgressBar' => true,
+                ]);
+                journalisation('Choix du moyen de paiement', $this->invoice);
             }
         }
     }

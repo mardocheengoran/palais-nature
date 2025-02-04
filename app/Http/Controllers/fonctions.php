@@ -621,3 +621,28 @@ function new_price($article)
     return $pivot;
 
 }
+
+
+function getDiscount($price_final)
+{
+    $price_discount = null;
+    $code = null;
+    //dd(session('discount'));
+    if (session('discount')) {
+        $price_discount = session('discount')->price;
+        $price_final = $price_final - $price_discount;
+        $code = session('discount')->code;
+    }
+    else {
+        if (Cookie::get('discount')) {
+            $price_discount = json_decode(Cookie::get('discount'))->price;
+            $price_final = $price_final - $price_discount;
+            $code = json_decode(Cookie::get('discount'))->code;
+        }
+    }
+    return (object)([
+        'price_final' => $price_final,
+        'price_discount' => $price_discount,
+        'code' => $code,
+    ]);
+}
